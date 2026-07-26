@@ -1,0 +1,56 @@
+{
+    "合宿_领票开关中转": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": []
+    },
+    "合宿_识别可领取图标": {
+        "recognition": "OCR",
+        "expected": "可领取",
+        "roi": [
+            633,
+            427,
+            84,
+            89
+        ],
+        "action": "Click",
+        "timeout": 3000,
+        "next": [
+            "合宿_点击领取弹窗"
+        ],
+        "on_error": []
+    },
+    "合宿_点击领取弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            238,
+            439,
+            240,
+            87
+        ],
+        "threshold": 0.7,
+        "timeout": 3000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "清除计数" // 领完收工，去打副本
+        ],
+        "on_error": [
+            "合宿_关闭弹窗异常中转"
+        ]
+    },
+    "合宿_关闭弹窗异常中转": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            // 由中转节点桥接回主干线，完美绕过语法检查
+        ]
+    }
+}

@@ -1,0 +1,352 @@
+{
+    "判断在外面还是里面": {
+        "next": [
+            "在主线外等",
+            "在合宿里面"
+        ],
+        "timeout": 3000000
+    },
+    "在主线外等": {
+        "recognition": "TemplateMatch",
+        "template": "主线新.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "DoNothing",
+        "timeout": 10000000,
+        "next": [
+            "在主线检查是否有人邀请"
+        ]
+    },
+    "在合宿里面": {
+        "recognition": "OCR",
+        "expected": "开始挑战",
+        "roi": [
+            261,
+            1172,
+            191,
+            58
+        ],
+        "action": "DoNothing",
+        "timeout": 3000000,
+        "next": [
+            "副本结束后回到合宿里面检查是否邀请"
+        ]
+    },
+    "在主线检查是否有人邀请": {
+        "recognition": "OCR",
+        "expected": "合宿邀请",
+        "roi": [
+            628,
+            785,
+            83,
+            83
+        ],
+        "action": "Click",
+        "timeout": 1000000,
+        "next": [
+            "主线_邀请人判定中转"
+        ]
+    },
+    "主线_邀请人判定中转": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "主线_检查邀请_第一条",
+            "主线_检查邀请_第二条",
+            "主线_检查邀请_第三条",
+            "主线_非指定好友_点击全部拒绝"
+        ]
+    },
+    "主线_检查邀请_第一条": {
+        "recognition": "OCR",
+        "expected": "{同意好友名字}",
+        "roi": [
+            108,
+            347,
+            503,
+            152
+        ],
+        "action": "Click",
+        "target": [
+            485,
+            397,
+            109,
+            40
+        ],
+        "next": [
+            "等待开始挑战"
+        ]
+    },
+    "主线_检查邀请_第二条": {
+        "recognition": "OCR",
+        "expected": "{同意好友名字}",
+        "roi": [
+            106,
+            515,
+            505,
+            152
+        ],
+        "action": "Click",
+        "target": [
+            486,
+            566,
+            107,
+            41
+        ],
+        "next": [
+            "等待开始挑战"
+        ]
+    },
+    "主线_检查邀请_第三条": {
+        "recognition": "OCR",
+        "expected": "{同意好友名字}",
+        "roi": [
+            107,
+            685,
+            504,
+            154
+        ],
+        "action": "Click",
+        "target": [
+            483,
+            735,
+            108,
+            38
+        ],
+        "next": [
+            "等待开始挑战"
+        ]
+    },
+    "主线_非指定好友_点击全部拒绝": {
+        "recognition": "OCR",
+        "expected": "全部拒绝",
+        "roi": [
+            287,
+            896,
+            144,
+            53
+        ],
+        "action": "Click",
+        "post_delay": 1500,
+        "next": [
+            "主线_非指定好友_点击关闭"
+        ]
+    },
+    "主线_非指定好友_点击关闭": {
+        "recognition": "TemplateMatch",
+        "template": "邀请弹窗右下角叉.png",
+        "roi": [
+            544,
+            984,
+            79,
+            84
+        ],
+        "action": "Click",
+        "timeout": 1000000,
+        "post_delay": 1500,
+        "next": [
+            "判断在外面还是里面"
+        ]
+    },
+    "等待开始挑战": {
+        "recognition": "OCR",
+        "expected": "开始挑战",
+        "roi": [
+            276,
+            1182,
+            174,
+            49
+        ],
+        "action": "DoNothing",
+        "pre_delay": 10000,
+        "timeout": 5000000,
+        "next": [
+            "识别是否已经进来副本"
+        ]
+    },
+    "识别是否已经进来副本": {
+        "recognition": "TemplateMatch",
+        "template": "合宿识别是否已经进来.png",
+        "threshold": 0.8,
+        "roi": [
+            22,
+            367,
+            55,
+            51
+        ],
+        "action": "DoNothing",
+        "timeout": 480000,
+        "next": "等待_副本识别结束后是否显示获得奖励"
+    },
+    "等待_副本识别结束后是否显示获得奖励": {
+        "recognition": "OCR",
+        "expected": "获得奖励",
+        "action": "DoNothing",
+        "timeout": 1000000,
+        "next": "合宿_关闭弹窗"
+    },
+    "合宿_关闭弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "获得奖励"
+        ],
+        "action": "Click",
+        "target": [
+            363,
+            1025
+        ],
+        "post_wait_freezes": 500,
+        "timeout": 3000,
+        "next": [
+            "合宿_关闭弹窗"
+        ],
+        "on_error": [
+            "检查判断有没有挂机弹窗"
+        ]
+    },
+    "检查判断有没有挂机弹窗": {
+        "recognition": "DirectHit",
+        "next": [
+            "等级升级弹窗",
+            "检查合宿_处理干扰弹窗",
+            "判断在外面还是里面"
+        ]
+    },
+    "检查合宿_处理干扰弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "挂机收益"
+        ],
+        "roi": [
+            138,
+            410,
+            167,
+            54
+        ],
+        "target": [
+            568,
+            379,
+            73,
+            68
+        ],
+        "action": "Click",
+        "post_wait_freezes": 500,
+        "timeout": 1500,
+        "next": [
+            "判断在外面还是里面"
+        ]
+    },
+    "等级升级弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜升级"
+        ],
+        "roi": [
+            261,
+            484,
+            203,
+            81
+        ],
+        "target": [
+            273,
+            964,
+            193,
+            133
+        ],
+        "action": "Click",
+        "post_wait_freezes": 500,
+        "timeout": 1500,
+        "next": [
+            "判断在外面还是里面"
+        ]
+    },
+    "副本结束后回到合宿里面检查是否邀请": {
+        "recognition": "OCR",
+        "expected": "合宿邀请",
+        "roi": [
+            630,
+            696,
+            80,
+            82
+        ],
+        "action": "Click",
+        "timeout": 1000000,
+        "next": [
+            "合宿内_邀请人判定中转"
+        ]
+    },
+    "合宿内_邀请人判定中转": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "同意邀请"
+        ],
+        "timeout": 50000,
+        "on_error": [
+            "合宿内_非指定好友_点击拒绝"
+        ]
+    },
+    "合宿内_非指定好友_点击拒绝": {
+        "recognition": "OCR",
+        "expected": "拒绝",
+        "roi": [
+            488,
+            450,
+            104,
+            35
+        ],
+        "action": "Click",
+        "timeout": 10000000,
+        "post_delay": 1000,
+        "next": [
+            "判断在外面还是里面"
+        ]
+    },
+    "合宿内_非指定好友_点击关闭": {
+        "recognition": "TemplateMatch",
+        "template": "合宿内邀请叉掉.png",
+        "action": "Click",
+        "timeout": 1000000,
+        "post_delay": 1500,
+        "next": [
+            "副本结束后回到合宿里面检查是否邀请"
+        ]
+    },
+    "同意邀请": {
+        "recognition": "OCR",
+        "expected": "{同意好友名字}",
+        "roi": [
+            210,
+            414,
+            92,
+            48
+        ],
+        "action": "DoNothing",
+        "timeout": 500000000,
+        "next": [
+            "合宿里面点击同意"
+        ]
+    },
+    "合宿里面点击同意": {
+        "recognition": "OCR",
+        "expected": "同意",
+        "roi": [
+            486,
+            397,
+            104,
+            37
+        ],
+        "action": "Click",
+        "timeout": 50000000,
+        "next": [
+            "等待开始挑战"
+        ]
+    }
+}

@@ -1,0 +1,284 @@
+{
+    "主线---前往无尽噩梦": {
+        "recognition": "DirectHit", // 直接命中，不用识别
+        "action": "DoNothing", // 啥也不干，就是个起点
+        "next": [
+            "点击副本-无尽噩梦"
+        ]
+    },
+    "点击副本-无尽噩梦": {
+        "recognition": "TemplateMatch",
+        "template": "副本新.png",
+        "threshold": [
+            0.8
+        ], // 相似度80%以上就算找到
+        "action": "Click", // 找到就点一下
+        "timeout": 30000, // 最多等30秒
+        "next": [
+            "往下滑动-"
+        ]
+    },
+    "往下滑动-": {
+        "recognition": "DirectHit",
+        "action": "Swipe",
+        "begin": [
+            360,
+            800,
+            200,
+            200
+        ],
+        "end": [
+            360,
+            700,
+            200,
+            200
+        ],
+        "duration": 2000,
+        "timeout": 3000,
+        "next": [
+            "点击副本-无尽噩梦挑战按钮"
+        ]
+    },
+    "点击副本-无尽噩梦挑战按钮": {
+        "recognition": "OCR",
+        "expected": [
+            "挑战"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            384,
+            959,
+            274,
+            180
+        ],
+        "action": "Click",
+        "timeout": 5000,
+        "next": [
+            "无尽噩梦总"
+        ]
+    },
+    "无尽噩梦总": {
+        "timeout": 500000,
+        "next": [
+            "点击副本-已进入无尽噩梦",
+            "识别今日次数已打完",
+            "无尽噩梦-已关闭"
+        ]
+    },
+    "识别今日次数已打完": {
+        "recognition": "TemplateMatch",
+        "threshold": 0.7,
+        "template": [
+            "无尽噩梦次数打完.png"
+        ],
+        "roi": [
+            391,
+            1130,
+            58,
+            42
+        ],
+        "timeout": 3000,
+        "action": "DoNothing",
+        "next": [
+            "无尽噩梦--返回"
+        ]
+    },
+    "无尽噩梦-已关闭": {
+        "recognition": "OCR",
+        "expected": [
+            "开启挑战"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            379,
+            1180,
+            130,
+            43
+        ],
+        "action": "DoNothing",
+        "timeout": 5000,
+        "next": [
+            "无尽噩梦--返回"
+        ]
+    },
+    "点击副本-已进入无尽噩梦": {
+        "recognition": "OCR",
+        "expected": [
+            "挑战"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            287,
+            1182,
+            127,
+            71
+        ],
+        "action": "Click",
+        "timeout": 50000,
+        "next": [
+            "无尽噩梦--选将界面"
+        ]
+    },
+    "无尽噩梦--选将界面": {
+        "recognition": "OCR",
+        "expected": [
+            "挑战"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            258,
+            1186,
+            192,
+            74
+        ],
+        "action": "Click",
+        "timeout": 5000,
+        "next": [
+            "无尽噩梦神将选择_循环控制器"
+        ]
+    },
+    "无尽噩梦神将选择_循环控制器": {
+        "timeout": 500000,
+        "next": [
+            "无尽噩梦等待选择神将出现", // 第一选择：去找找看有没有选牌界面
+            "无尽噩梦--左上角暂停",
+            "识别今日次数已打完" // 备用选择：如果找不到选牌界面，说明开打了，去等结算
+        ]
+    },
+    "无尽噩梦等待选择神将出现": {
+        "recognition": "OCR",
+        "expected": [
+            "选择神将"
+        ],
+        "roi": [
+            237,
+            662,
+            259,
+            75
+        ],
+        "threshold": 0.7,
+        "timeout": 500000,
+        "action": "DoNothing",
+        "next": [
+            "无尽噩梦选中卡牌1"
+        ]
+    },
+    "无尽噩梦选中卡牌1": {
+        "recognition": "DirectHit",
+        "target": [
+            213,
+            891,
+            112,
+            180
+        ],
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "无尽噩梦选中卡牌2"
+        ]
+    },
+    "无尽噩梦选中卡牌2": {
+        "recognition": "DirectHit",
+        "target": [
+            395,
+            894,
+            112,
+            180
+        ],
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "无尽噩梦卡牌选好点击确定"
+        ]
+    },
+    "无尽噩梦卡牌选好点击确定": {
+        "recognition": "TemplateMatch",
+        "threshold": 0.7,
+        "template": [
+            "公会副本---确定按钮.png"
+        ],
+        "roi": [
+            291,
+            1135,
+            140,
+            52
+        ],
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "无尽噩梦神将选择_循环控制器"
+        ]
+    },
+    "无尽噩梦--左上角暂停": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "公会副本暂停新.png"
+        ],
+        "roi": [
+            29,
+            231,
+            44,
+            41
+        ],
+        "threshold": 0.7,
+        "timeout": 300000,
+        "action": "Click",
+        "next": [
+            "无尽噩梦--左上角退出战斗"
+        ]
+    },
+    "无尽噩梦--左上角退出战斗": {
+        "recognition": "OCR",
+        "expected": [
+            "退出战斗"
+        ],
+        "roi": [
+            131,
+            1073,
+            155,
+            70
+        ],
+        "threshold": 0.7,
+        "timeout": 500000,
+        "action": "Click",
+        "next": [
+            "无尽噩梦识别点击空白处关闭"
+        ]
+    },
+    "无尽噩梦识别点击空白处关闭": {
+        "recognition": "OCR",
+        "expected": [
+            "点击空白处关闭"
+        ],
+        "roi": [
+            246,
+            906,
+            231,
+            46
+        ],
+        "threshold": 0.7,
+        "timeout": 50000,
+        "action": "Click",
+        "next": [
+            "无尽噩梦总"
+        ]
+    },
+    "无尽噩梦--返回": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "公会副本--返回.png"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            603,
+            1170,
+            116,
+            110
+        ],
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "点击主线按钮返回"
+        ]
+    }
+}

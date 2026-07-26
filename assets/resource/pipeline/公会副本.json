@@ -1,0 +1,233 @@
+{
+    "公会副本_启动": {
+        "enabled": false,
+        "next": [
+            "点击公会副本"
+        ]
+    },
+    "找到公会副本": {
+        "recognition": "TemplateMatch",
+        "threshold": 0.7,
+        "template": [
+            "公会新.png"
+        ],
+        "roi": [
+            595,
+            1182,
+            113,
+            93
+        ],
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "点击公会副本"
+        ]
+    },
+    "点击公会副本": {
+        "recognition": "TemplateMatch",
+        "threshold": [
+            0.7
+        ],
+        "template": [
+            "公会副本.png"
+        ],
+        "roi": [
+            414,
+            910,
+            246,
+            106
+        ],
+        "timeout": 100000,
+        "action": "Click",
+        "next": [
+            "公会总"
+        ]
+    },
+    "公会总": {
+        "next": [
+            "公会副本--免费次数",
+            "公会副本--返回"
+        ]
+    },
+    "公会副本--免费次数": {
+        "recognition": "OCR",
+        "expected": [
+            "免费"
+        ],
+        "roi": [
+            262,
+            1154,
+            191,
+            72
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "post_delay": 1000,
+        "action": "Click",
+        "next": [
+            "公会副本--开始挑战"
+        ]
+    },
+    "公会副本--开始挑战": {
+        "recognition": "OCR",
+        "expected": [
+            "挑战"
+        ],
+        "roi": [
+            269,
+            1182,
+            191,
+            72
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "action": "Click",
+        "post_delay": 3000,
+        "next": [
+            "神将选择_循环控制器"
+        ]
+    },
+    "神将选择_循环控制器": {
+        "next": [
+            "等待选择神将出现", // 第一选择：去找找看有没有选牌界面
+            "公会副本--左上角暂停" // 备用选择：如果找不到选牌界面，说明开打了，去等结算
+        ]
+    },
+    "等待选择神将出现": {
+        "recognition": "OCR",
+        "expected": [
+            "选择神将"
+        ],
+        "roi": [
+            237,
+            662,
+            259,
+            75
+        ],
+        "threshold": 0.7,
+        "timeout": 5000000,
+        "action": "DoNothing",
+        "next": [
+            "选中卡牌1"
+        ]
+    },
+    "选中卡牌1": {
+        "recognition": "DirectHit",
+        "target": [
+            213,
+            891,
+            112,
+            180
+        ],
+        "timeout": 3000,
+        "action": "Click",
+        "next": [
+            "选中卡牌2"
+        ]
+    },
+    "选中卡牌2": {
+        "recognition": "DirectHit",
+        "target": [
+            395,
+            894,
+            112,
+            180
+        ],
+        "timeout": 3000,
+        "action": "Click",
+        "next": [
+            "卡牌选好点击确定"
+        ]
+    },
+    "卡牌选好点击确定": {
+        "recognition": "TemplateMatch",
+        "threshold": 0.7,
+        "template": [
+            "公会副本---确定按钮.png"
+        ],
+        "roi": [
+            291,
+            1135,
+            140,
+            52
+        ],
+        "timeout": 3000,
+        "action": "Click",
+        "next": [
+            "神将选择_循环控制器"
+        ]
+    },
+    "公会副本--左上角暂停": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "公会副本暂停新.png"
+        ],
+        "roi": [
+            29,
+            231,
+            44,
+            41
+        ],
+        "threshold": 0.7,
+        "timeout": 3000,
+        "action": "Click",
+        "next": [
+            "公会副本--左上角退出战斗"
+        ]
+    },
+    "公会副本--左上角退出战斗": {
+        "recognition": "OCR",
+        "expected": [
+            "退出战斗"
+        ],
+        "roi": [
+            131,
+            1073,
+            155,
+            70
+        ],
+        "threshold": 0.7,
+        "timeout": 500000,
+        "action": "Click",
+        "next": [
+            "识别点击空白处关闭"
+        ]
+    },
+    "识别点击空白处关闭": {
+        "recognition": "OCR",
+        "expected": [
+            "点击空白处关闭"
+        ],
+        "roi": [
+            246,
+            906,
+            231,
+            46
+        ],
+        "threshold": 0.7,
+        "timeout": 50000,
+        "action": "Click",
+        "next": [
+            "公会总"
+        ]
+    },
+    "公会副本--返回": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "公会副本--返回.png"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            622,
+            1198,
+            81,
+            76
+        ],
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "公会探矿_启动",
+            "执行返回主线"
+        ]
+    }
+}

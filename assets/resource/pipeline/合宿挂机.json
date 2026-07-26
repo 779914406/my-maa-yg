@@ -1,0 +1,471 @@
+{
+    "合宿---从主线前往合宿入口": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "点击合副本",
+            "合宿_入口"
+        ]
+    },
+    "点击合副本": {
+        "recognition": "TemplateMatch",
+        "template": "副本新.png",
+        "threshold": 0.8,
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "点击副本-合宿"
+        ]
+    },
+    "点击副本-合宿": {
+        "recognition": "TemplateMatch",
+        "template": "副本--合宿---挑战按钮.png",
+        "threshold": 0.8,
+        "roi": [
+            68,
+            415,
+            601,
+            254
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "合宿_入口"
+        ]
+    },
+    "合宿_入口": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "清除计数"
+        ]
+    },
+    "清除计数": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "ClearCounterAction",
+        "next": [
+            "合宿_动态导航"
+        ]
+    },
+    "合宿_读取当前夜": {
+        "recognition": "OCR",
+        "expected": "\\d+夜",
+        "roi": [
+            255,
+            25,
+            210,
+            71
+        ],
+        "action": "DoNothing",
+        "next": [
+            "合宿_动态导航"
+        ]
+    },
+    "合宿_动态导航": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "HeSuNavigateAction",
+        "custom_action_param": {
+            "target": 15
+        },
+        "pre_delay": 1000,
+        "next": [
+            "合宿_循环计数拦截"
+        ],
+        "on_error": [
+            "合宿_单次点右"
+        ]
+    },
+    "合宿_单次点左": {
+        "recognition": "TemplateMatch",
+        "template": "左箭头.png",
+        "roi": [
+            27,
+            581,
+            68,
+            87
+        ],
+        "threshold": 0.8,
+        "action": "Click",
+        "target_offset": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "post_delay": 1500,
+        "next": [
+            "合宿_动态导航"
+        ] // 点击后回到导航节点  
+    },
+    "合宿_单次点右": {
+        "recognition": "TemplateMatch",
+        "template": "合宿右箭头.png",
+        "roi": [
+            630,
+            585,
+            56,
+            82
+        ],
+        "threshold": 0.7,
+        "target_offset": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "action": "Click",
+        "post_delay": 1500,
+        "next": [
+            "合宿_动态导航"
+        ] // 点击后回到导航节点  
+    },
+    "合宿_循环计数拦截": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "HeSuCounterAction",
+        "custom_action_param": {
+            "count": 5
+        },
+        "next": [
+            "合宿_模式分支"
+        ],
+        "on_error": [
+            "合宿_结束"
+        ]
+    },
+    "合宿_模式分支": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": "合宿_单人开始"
+    },
+    "合宿_单人开始": {
+        "recognition": "TemplateMatch",
+        "template": "合宿--开始挑战.png",
+        "action": "Click",
+        "target_offset": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "timeout": 10000,
+        "next": "合宿_单人确认弹窗"
+    },
+    "合宿_单人确认弹窗": {
+        "recognition": "OCR",
+        "expected": "确定",
+        "roi": [
+            393,
+            694,
+            142,
+            55
+        ],
+        "threshold": 0.6,
+        "action": "Click",
+        "post_delay": 2000,
+        "timeout": 300000,
+        "next": "合宿挂机识别是否已经进来副本"
+    },
+    "合宿_点击主页邀请": {
+        "recognition": "TemplateMatch",
+        "template": "合宿----组队邀请.png",
+        "roi": [
+            528,
+            960,
+            50,
+            52
+        ],
+        "action": "Click",
+        "timeout": 100000,
+        "post_delay": 1500,
+        "next": "合宿_点击公会标签"
+    },
+    "合宿_点击公会标签": {
+        "recognition": "OCR",
+        "expected": "公会",
+        "roi": [
+            412,
+            1108,
+            115,
+            54
+        ],
+        "action": "Click",
+        "timeout": 1000000,
+        "post_delay": 1500,
+        "next": "合宿_查找确认中转"
+    },
+    "合宿_查找确认中转": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "合宿_查找忆梦并邀请"
+        ],
+        "timeout": 2000, // 在这里设置 1 秒超时。如果 1 秒内没瞅见“忆梦”，就判定未命中
+        "on_error": [
+            "合宿_向下滑动列表" // 未命中时，果断触发滑动
+        ]
+    },
+    "合宿_查找忆梦并邀请": {
+        "recognition": "OCR",
+        "expected": "{好友名字}",
+        "roi": [
+            44,
+            238,
+            631,
+            679
+        ],
+        "action": "Custom",
+        "custom_action": "ClickDynamicInviteAction",
+        "timeout": 100000,
+        "next": "合宿_关闭邀请列表",
+        "on_error": [
+            "合宿_向下滑动列表"
+        ]
+    },
+    "合宿_向下滑动列表": {
+        "recognition": "DirectHit",
+        "action": "Swipe",
+        "begin": [
+            284,
+            750
+        ],
+        "end": [
+            284,
+            350
+        ],
+        "duration": 2000,
+        "post_delay": 2000,
+        "next": "合宿_查找确认中转"
+    },
+    "合宿_关闭邀请列表": {
+        "recognition": "TemplateMatch",
+        "template": "合宿邀请公会关闭按钮.png",
+        "roi": [
+            615,
+            1099,
+            73,
+            82
+        ],
+        "action": "Click",
+        "timeout": 10000,
+        "post_delay": 1000,
+        "next": "合宿_检查是否进房中转"
+    },
+    "合宿_检查是否进房中转": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "确认是否进来"
+        ],
+        "timeout": 8000, // 在这里设置 1 秒超时。如果 1 秒内没瞅见“忆梦”，就判定未命中
+        "on_error": [
+            "合宿组队右下角关闭按钮" // 未命中时，果断触发滑动
+        ]
+    },
+    "确认是否进来": {
+        "recognition": "OCR",
+        "expected": "{好友名字}",
+        "roi": [
+            477,
+            1020,
+            135,
+            37
+        ],
+        "action": "DoNothing",
+        "timeout": 100000,
+        "next": "合宿_等待并开始挑战"
+    },
+    "合宿组队右下角关闭按钮": {
+        "recognition": "TemplateMatch",
+        "template": "合宿组队返回按钮.png",
+        "threshold": 0.8,
+        "roi": [
+            629,
+            1199,
+            79,
+            76
+        ],
+        "action": "Click",
+        "timeout": 480000,
+        "next": "合宿_异常重新点击副本"
+    },
+    "合宿_异常重新点击副本": {
+        "recognition": "TemplateMatch",
+        "template": "副本--合宿---挑战按钮.png",
+        "threshold": 0.8,
+        "roi": [
+            68,
+            415,
+            601,
+            254
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "post_delay": 1500,
+        "next": "合宿_点击主页邀请" // 3. 核心改动：重新点挑战进房后，绕过前面的计数拦截，直接去再次点邀请！
+    },
+    "合宿_等待并开始挑战": {
+        "recognition": "OCR",
+        "expected": "开始挑战",
+        "action": "Click",
+        "pre_delay": 3000,
+        "timeout": 100000,
+        "next": "合宿挂机识别是否已经进来副本"
+    },
+    "合宿挂机识别是否已经进来副本": {
+        "recognition": "TemplateMatch",
+        "template": "合宿识别是否已经进来.png",
+        "threshold": 0.8,
+        "roi": [
+            22,
+            367,
+            55,
+            51
+        ],
+        "action": "DoNothing",
+        "timeout": 480000,
+        "next": "合宿_战斗点击床"
+    },
+    "合宿_战斗点击床": {
+        "recognition": "TemplateMatch",
+        "template": "合宿床图.png",
+        "threshold": 0.75,
+        "roi": [
+            100,
+            850,
+            550,
+            150
+        ],
+        "repeat": 2,
+        "repeat_delay": 300,
+        "action": "Click",
+        "target_offset": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "pre_delay": 5000,
+        "timeout": 480000,
+        "next": "合宿_副本识别结束后是否显示获得奖励"
+    },
+    "合宿_副本识别结束后是否显示获得奖励": {
+        "recognition": "OCR",
+        "expected": "获得奖励",
+        "action": "DoNothing",
+        "timeout": 10000,
+        "pre_delay": 2000,
+        "next": "合宿_关闭结算弹窗"
+    },
+    "合宿_关闭结算弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "获得奖励"
+        ],
+        "action": "Click",
+        "target": [
+            363,
+            1025
+        ],
+        "post_wait_freezes": 500,
+        "timeout": 3000,
+        "next": [
+            "合宿_关闭结算弹窗"
+        ],
+        "on_error": [
+            "判断有没有挂机弹窗"
+        ]
+    },
+    "判断有没有挂机弹窗": {
+        "recognition": "DirectHit",
+        "next": [
+            "合宿_处理干扰弹窗",
+            "合宿挂机等级升级弹窗",
+            "合宿_循环计数拦截"
+        ]
+    },
+    "合宿挂机等级升级弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜升级"
+        ],
+        "roi": [
+            261,
+            484,
+            203,
+            81
+        ],
+        "target": [
+            273,
+            964,
+            193,
+            133
+        ],
+        "action": "Click",
+        "post_wait_freezes": 500,
+        "timeout": 1500,
+        "next": [
+            "合宿_循环计数拦截"
+        ]
+    },
+    "合宿_处理干扰弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "挂机收益"
+        ],
+        "roi": [
+            138,
+            410,
+            167,
+            54
+        ],
+        "target": [
+            568,
+            379,
+            73,
+            68
+        ],
+        "action": "Click",
+        "post_wait_freezes": 500,
+        "timeout": 1500,
+        "next": [
+            "合宿_循环计数拦截"
+        ]
+    },
+    "合宿_结束": {
+        "recognition": "TemplateMatch",
+        "template": "合宿返回主线的按钮.png",
+        "roi": [
+            603,
+            1171,
+            117,
+            107
+        ],
+        "threshold": [
+            0.7
+        ],
+        "action": "Click",
+        "timeout": 5000,
+        "next": [
+            "合宿_强制结束"
+        ]
+    },
+    "合宿_强制结束": {
+        "recognition": "TemplateMatch",
+        "template": "主线新.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [] // 最后一步，流程结束
+    }
+}

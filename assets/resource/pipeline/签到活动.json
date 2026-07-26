@@ -1,0 +1,381 @@
+{
+    "点击签到活动": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "签到活动.png"
+        ],
+        "roi": [
+            633,
+            618,
+            56,
+            51
+        ],
+        "threshold": [
+            0.7
+        ],
+        "action": "Click",
+        "timeout": 10000,
+        "next": [
+            "确认是不是已经进来周签到获得页面"
+        ]
+    },
+    "确认是不是已经进来周签到获得页面": {
+        "recognition": "OCR",
+        "expected": [
+            "每周签到"
+        ],
+        "roi": [
+            342,
+            70,
+            315,
+            104
+        ],
+        "threshold": 0.7,
+        "action": "DoNothing",
+        "timeout": 300000,
+        "next": [
+            "选中周签到"
+        ]
+    },
+    "选中周签到": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "签到活动--周签到.png"
+        ],
+        "roi": [
+            28,
+            1184,
+            87,
+            82
+        ],
+        "threshold": [
+            0.7
+        ],
+        "action": "Click",
+        "next": [
+            "在当前页面识别有没有签到",
+            "往下滑动--周签到"
+        ]
+    },
+    "在当前页面识别有没有签到": {
+        "recognition": "OCR",
+        "expected": [
+            "签到"
+        ],
+        "roi": [
+            503,
+            539,
+            169,
+            595
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "timeout": 3000,
+        "next": [
+            "关闭周签到奖励弹窗"
+        ]
+    },
+    "往下滑动--周签到": {
+        "pre_delay": 2000,
+        "recognition": "DirectHit",
+        "action": "Swipe",
+        "begin": [
+            260,
+            800,
+            200,
+            200
+        ],
+        "end": [
+            260,
+            300,
+            200,
+            200
+        ],
+        "duration": 6000,
+        "timeout": 3000,
+        "next": [
+            "周签到",
+            "往下拉周签到的页面等待"
+        ]
+    },
+    "往下拉周签到的页面等待": {
+        "recognition": "OCR",
+        "expected": [
+            "签到"
+        ],
+        "roi": [
+            503,
+            539,
+            169,
+            595
+        ],
+        "threshold": 0.7,
+        "inverse": true,
+        "action": "DoNothing",
+        "timeout": 3000,
+        "next": [
+            "签到活动--日签到"
+        ]
+    },
+    "周签到": {
+        "recognition": "OCR",
+        "expected": [
+            "签到"
+        ],
+        "roi": [
+            503,
+            539,
+            169,
+            595
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "timeout": 3000,
+        "next": [
+            "关闭周签到奖励弹窗",
+            "签到活动--日签到"
+        ]
+    },
+    "关闭周签到奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            231,
+            436,
+            259,
+            82
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "pre_delay": 2000,
+        "post_delay": 1500,
+        "next": [
+            "签到活动--日签到"
+        ]
+    },
+    "签到活动--日签到": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "签到活动--每日签到.png"
+        ],
+        "roi": [
+            156,
+            1186,
+            82,
+            86
+        ],
+        "threshold": 0.7,
+        "timeout": 20000,
+        "action": "Click",
+        "next": [
+            "日签到--亮",
+            "识别累计天数_7天",
+            "识别累计天数_14天",
+            "识别累计天数_21天",
+            "识别累计天数_30天",
+            "日签到--再领一次"
+        ]
+    },
+    "日签到--亮": {
+        "recognition": "OCR",
+        "expected": [
+            "签到"
+        ],
+        "roi": [
+            315,
+            1084,
+            139,
+            53
+        ],
+        "threshold": 0.7,
+        "timeout": 500000,
+        "action": "Click",
+        "next": [
+            "关闭日签到奖励弹窗"
+        ]
+    },
+    "日签到--再领一次": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "签到活动--再领一次.png"
+        ],
+        "roi": [
+            264,
+            1069,
+            191,
+            78
+        ],
+        "threshold": 0.7,
+        "action": "DoNothing",
+        "timeout": 300000,
+        "next": [
+            "精彩活动返回主线"
+        ]
+    },
+    "日签到": {
+        "recognition": "OCR",
+        "expected": "签到",
+        "roi": [
+            266,
+            1071,
+            193,
+            75
+        ],
+        "threshold": 0.7,
+        "timeout": 300000,
+        "action": "Click",
+        "next": [
+            "关闭日签到奖励弹窗"
+        ]
+    },
+    "关闭日签到奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            231,
+            436,
+            259,
+            82
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "识别累计天数_7天",
+            "识别累计天数_14天",
+            "识别累计天数_21天",
+            "识别累计天数_30天",
+            "日签到--再领一次",
+            "精彩活动返回主线"
+        ]
+    },
+    "识别累计天数_7天": {
+        "recognition": "OCR",
+        "expected": [
+            "7天",
+            "7"
+        ],
+        "roi": [
+            55,
+            334,
+            77,
+            61
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": [
+            213,
+            312,
+            62,
+            63
+        ],
+        "next": [
+            "关闭累计奖励弹窗"
+        ]
+    },
+    "识别累计天数_14天": {
+        "recognition": "OCR",
+        "expected": [
+            "14天",
+            "14"
+        ],
+        "roi": [
+            55,
+            334,
+            77,
+            61
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": [
+            343,
+            314,
+            62,
+            62
+        ],
+        "next": [
+            "关闭累计奖励弹窗"
+        ]
+    },
+    "识别累计天数_21天": {
+        "recognition": "OCR",
+        "expected": [
+            "21天",
+            "21"
+        ],
+        "roi": [
+            55,
+            334,
+            77,
+            61
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": [
+            474,
+            310,
+            62,
+            63
+        ],
+        "next": [
+            "关闭累计奖励弹窗"
+        ]
+    },
+    "识别累计天数_30天": {
+        "recognition": "OCR",
+        "expected": [
+            "30天",
+            "30"
+        ],
+        "roi": [
+            55,
+            334,
+            77,
+            61
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": [
+            605,
+            312,
+            64,
+            62
+        ],
+        "next": [
+            "关闭累计奖励弹窗"
+        ]
+    },
+    "关闭累计奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得",
+            "材料"
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "日签到--再领一次",
+            "精彩活动返回主线"
+        ]
+    }
+}

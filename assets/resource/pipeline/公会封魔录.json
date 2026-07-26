@@ -1,0 +1,258 @@
+{
+    "封魔录_入口": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "封魔录_状态判断",
+            "点击封魔录"
+        ]
+    },
+    "封魔录_状态判断": {
+        "recognition": "OCR",
+        "expected": [
+            "公会封魔录"
+        ],
+        "roi": [
+            220,
+            29,
+            239,
+            67
+        ],
+        "threshold": 0.7,
+        "timeout": 1500,
+        "action": "DoNothing",
+        "next": [
+            "封魔录_清除计数"
+        ],
+        "on_error": [
+            "点击封魔录"
+        ]
+    },
+    "点击封魔录": {
+        "recognition": "TemplateMatch",
+        "template": "封魔录新.png",
+        "roi": [
+            125,
+            914,
+            451,
+            100
+        ],
+        "threshold": 0.85,
+        "timeout": 1500,
+        "action": "Click",
+        "next": [
+            "封魔录_清除计数"
+        ],
+        "on_error": [
+            "关闭随机事件",
+            "滑动寻找封魔录"
+        ]
+    },
+    "关闭随机事件": {
+        "recognition": "OCR",
+        "expected": [
+            "随机事件"
+        ],
+        "action": "Click",
+        "target": [
+            50,
+            150,
+            50,
+            50
+        ],
+        "next": [
+            "点击封魔录"
+        ]
+    },
+    "滑动寻找封魔录": {
+        "action": "Swipe",
+        "begin": [
+            500,
+            950,
+            10,
+            10
+        ],
+        "end": [
+            200,
+            950,
+            10,
+            10
+        ],
+        "next": [
+            "点击封魔录"
+        ]
+    },
+    "封魔录_清除计数": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "ClearCounterAction",
+        "next": [
+            "封魔录_等待主界面加载"
+        ]
+    },
+    "封魔录_等待主界面加载": {
+        "recognition": "OCR",
+        "expected": [
+            "公会封魔录"
+        ],
+        "roi": [
+            220,
+            29,
+            239,
+            67
+        ],
+        "threshold": 0.7,
+        "action": "DoNothing",
+        "pre_delay": 500,
+        "next": [
+            "封魔录_循环计数拦截"
+        ]
+    },
+    "封魔录_循环计数拦截": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "FengMoLuCounterAction",
+        "custom_action_param": {
+            "count": 5
+        },
+        "next": [
+            "封魔录--挑战"
+        ],
+        "on_error": [
+            "封魔录_结束返回"
+        ]
+    },
+    "封魔录--挑战": {
+        "recognition": "OCR",
+        "expected": [
+            "挑战"
+        ],
+        "roi": [
+            280,
+            1161,
+            158,
+            55
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "封魔录--选将界面"
+        ]
+    },
+    "封魔录--选将界面": {
+        "recognition": "OCR",
+        "expected": [
+            "挑战"
+        ],
+        "roi": [
+            265,
+            1192,
+            182,
+            65
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "进入副本"
+        ]
+    },
+    "进入副本": {
+        "recognition": "OCR",
+        "roi": [
+            4,
+            359,
+            91,
+            99
+        ],
+        "expected": [
+            "怪物详情"
+        ],
+        "threshold": 0.6,
+        "action": "DoNothing",
+        "next": [
+            "等待副本完成"
+        ]
+    },
+    "等待副本完成": {
+        "recognition": "DirectHit",
+        "next": [
+            "关闭弹窗",
+            "挑战成功"
+        ],
+        "timeout": 500000,
+        "on_error": []
+    },
+    "关闭弹窗": {
+        "recognition": "OCR",
+        "roi": [
+            206,
+            1232,
+            311,
+            48
+        ],
+        "expected": [
+            "点击空白处跳过",
+            "点击任意位置关闭弹窗"
+        ],
+        "repeat": 2,
+        "repeat_delay": 300,
+        "threshold": 0.7,
+        "action": "Click",
+        "next": [
+            "等待副本完成"
+        ]
+    },
+    "挑战成功": {
+        "recognition": "OCR",
+        "expected": [
+            "获得奖励"
+        ],
+        "roi": [
+            284,
+            537,
+            152,
+            64
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "封魔录_等待主界面加载"
+        ]
+    },
+    "封魔录_结束返回": {
+        "recognition": "DirectHit",
+        "action": "Click",
+        "target": [
+            610,
+            1175,
+            70,
+            70
+        ],
+        "pre_delay": 1500,
+        "next": [
+            "封魔录_强制回主线"
+        ]
+    },
+    "封魔录_强制回主线": {
+        "recognition": "TemplateMatch",
+        "template": "主线新.png",
+        "threshold": 0.8,
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": []
+    }
+}

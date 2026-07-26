@@ -1,0 +1,337 @@
+{
+    "NodeA_启动游戏应用": {
+        "recognition": "DirectHit",
+        "action": {
+            "type": "StartApp",
+            "param": {
+                "package": "com.dhmgygjsztt2.az"
+            }
+        },
+        "timeout": 100000000,
+        "next": [
+            "NodeC_1_等待红色加载出现"
+        ]
+    },
+    "NodeC_1_等待红色加载出现": {
+        "recognition": "TemplateMatch",
+        "template": "启动游戏-判断是否有这个东西.png",
+        "roi": [
+            18,
+            1114,
+            67,
+            23
+        ],
+        "timeout": 800000,
+        "next": [
+            "NodeC_2_等待红色加载消失"
+        ]
+    },
+    "NodeC_2_等待红色加载消失": {
+        "recognition": "TemplateMatch",
+        "template": "启动页消失.png",
+        "roi": [
+            7,
+            1024,
+            692,
+            248
+        ],
+        "inverse": true,
+        "timeout": 800000,
+        "next": [
+            "加载后_等待弹窗弹出"
+        ]
+    },
+    "加载后_等待弹窗弹出": {
+        "recognition": "DirectHit",
+        "post_delay": 5000,
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "检测并点击重新获取活动": {
+        "recognition": "OCR",
+        "roi": [
+            6,
+            233,
+            112,
+            109
+        ],
+        "expected": "重新获取活动",
+        "threshold": 0.6,
+        "action": "Click",
+        "target_offset": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "post_delay": 2000,
+        "timeout": 80000,
+        "next": [
+            "识别并领取挂机收益",
+            "弹窗循环检查入口"
+        ]
+    },
+    "识别并领取挂机收益": {
+        "recognition": "OCR",
+        "roi": [
+            397,
+            984,
+            193,
+            109
+        ],
+        "expected": "领取",
+        "threshold": 0.6,
+        "action": "Click",
+        "target_offset": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "post_delay": 1000,
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "关闭挂机收益弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "action": "Click",
+        "target": [
+            387,
+            1170
+        ],
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "启动游戏进来的公告": {
+        "recognition": "TemplateMatch",
+        "template": "启动游戏--游戏公告叉.png",
+        "roi": [
+            632,
+            173,
+            73,
+            70
+        ],
+        "action": "Click",
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "识别每晚今日排名弹窗": {
+        "recognition": "OCR",
+        "roi": [
+            265,
+            172,
+            188,
+            67
+        ],
+        "expected": [
+            "最终排名"
+        ],
+        "threshold": 0.6,
+        "action": "DoNothing",
+        "next": [
+            "识别每晚今日排名弹窗--确定"
+        ]
+    },
+    "识别每晚今日排名弹窗--确定": {
+        "recognition": "OCR",
+        "roi": [
+            260,
+            988,
+            199,
+            71
+        ],
+        "expected": [
+            "确定"
+        ],
+        "threshold": 0.6,
+        "action": "Click",
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "识别每晚公会战结束弹窗": {
+        "recognition": "OCR",
+        "roi": [
+            241,
+            189,
+            243,
+            74
+        ],
+        "expected": [
+            "今日排名"
+        ],
+        "threshold": 0.6,
+        "action": "DoNothing",
+        "timeout": 10000,
+        "next": [
+            "识别每晚公会战结束弹窗--确定"
+        ]
+    },
+    "识别每晚公会战结束弹窗--确定": {
+        "recognition": "OCR",
+        "roi": [
+            235,
+            1128,
+            271,
+            60
+        ],
+        "expected": [
+            "点击空白处关闭"
+        ],
+        "threshold": 0.6,
+        "timeout": 10000,
+        "action": "Click",
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "识别四界弹窗--确定": {
+        "recognition": "OCR",
+        "roi": [
+            178,
+            879,
+            239,
+            52
+        ],
+        "expected": [
+            "总获得云珠总量"
+        ],
+        "threshold": 0.6,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "噩梦冠军弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "噩梦冠军"
+        ],
+        "roi": [
+            212,
+            224,
+            282,
+            64
+        ],
+        "threshold": 0.6,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "识别每周排名弹窗": {
+        "recognition": "OCR",
+        "roi": [
+            260,
+            173,
+            198,
+            66
+        ],
+        "expected": [
+            "最终排名"
+        ],
+        "threshold": 0.6,
+        "action": "Click",
+        "next": [
+            "弹窗循环检查入口"
+        ]
+    },
+    "弹窗循环检查入口": {
+        "recognition": "DirectHit",
+        "timeout": 3000000,
+        "next": [
+            "检测并点击重新获取活动",
+            "启动游戏进来的公告",
+            "识别并领取挂机收益",
+            "识别每晚今日排名弹窗",
+            "关闭挂机收益弹窗",
+            "识别今日不再提示",
+            "识别每晚公会战结束弹窗",
+            "识别每周排名弹窗",
+            "识别四界弹窗--确定",
+            "噩梦冠军弹窗",
+            "等5秒再查弹窗"
+        ]
+    },
+    "识别今日不再提示": {
+        "recognition": "OCR",
+        "roi": [
+            120,
+            747,
+            487,
+            384
+        ],
+        "expected": "今日不再提示",
+        "threshold": 0.6,
+        "action": "Click",
+        "next": [
+            "通用_点空白关弹窗"
+        ]
+    },
+    "通用_点空白关弹窗": {
+        "target": [
+            360,
+            1140
+        ],
+        "action": "Click",
+        "post_delay": 5000,
+        "next": [
+            "弹窗二次检查入口"
+        ]
+    },
+    "等5秒再查弹窗": {
+        "action": "DoNothing",
+        "post_delay": 10000,
+        "timeout": 10000000,
+        "next": [
+            "弹窗二次检查入口"
+        ]
+    },
+    "弹窗二次检查入口": {
+        "recognition": "DirectHit",
+        "timeout": 3000000,
+        "next": [
+            "检测并点击重新获取活动",
+            "识别并领取挂机收益",
+            "识别每晚今日排名弹窗",
+            "识别今日不再提示",
+            "关闭挂机收益弹窗",
+            "识别每晚公会战结束弹窗",
+            "识别每周排名弹窗",
+            "识别四界弹窗--确定",
+            "噩梦冠军弹窗",
+            "所有弹窗已清完_进入主页"
+        ]
+    },
+    "所有弹窗已清完_进入主页": {
+        "recognition": "OCR",
+        "expected": "5",
+        "roi": [
+            358,
+            1041,
+            54,
+            33
+        ],
+        "threshold": 0.8,
+        "timeout": 30000,
+        "pre_delay": 10000,
+        "next": []
+    }
+}

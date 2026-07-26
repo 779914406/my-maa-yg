@@ -1,0 +1,191 @@
+{
+    "地府商店": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "兑换商店--地府.png"
+        ],
+        "roi": [
+            537,
+            1102,
+            53,
+            47
+        ],
+        "threshold": [
+            0.7
+        ],
+        "action": "Click",
+        "next": [
+            "地府总确认"
+        ]
+    },
+    "地府总确认": {
+        "next": [
+            "地府商店--识别机关随机箱",
+            "地府商店--识别永动齿轮",
+            "地府商店--识别红机关",
+            "地府机关随机箱已售完",
+            "地府永动齿轮已售完",
+            "地府红机关已售完"
+        ]
+    },
+    "地府机关随机箱已售完": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "地府商店--机关已售完.png"
+        ],
+        "roi": [
+            528,
+            451,
+            82,
+            34
+        ],
+        "threshold": [
+            0.7
+        ],
+        "next": [
+            "地府永动齿轮已售完"
+        ]
+    },
+    "地府永动齿轮已售完": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "地府商店--永动齿轮.png"
+        ],
+        "roi": [
+            319,
+            451,
+            80,
+            32
+        ],
+        "threshold": [
+            0.7
+        ],
+        "next": [
+            "地府红机关已售完"
+        ]
+    },
+    "地府红机关已售完": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "地府--红机关已售完.png"
+        ],
+        "roi": [
+            526,
+            1021,
+            84,
+            28
+        ],
+        "threshold": [
+            0.7
+        ],
+        "next": [
+            "关闭兑换商店"
+        ]
+    },
+    "地府商店--识别机关随机箱": {
+        "recognition": "OCR",
+        "expected": [
+            "120"
+        ],
+        "roi": [
+            560,
+            452,
+            56,
+            32
+        ],
+        "action": "Click",
+        "next": [
+            "地府材料MAX"
+        ]
+    },
+    "地府商店--识别永动齿轮": {
+        "recognition": "OCR",
+        "expected": [
+            "10"
+        ],
+        "roi": [
+            361,
+            454,
+            37,
+            30
+        ],
+        "action": "Click",
+        "next": [
+            "地府材料MAX"
+        ]
+    },
+    "地府商店--识别红机关": {
+        "recognition": "OCR",
+        "expected": [
+            "300"
+        ],
+        "roi": [
+            545,
+            1021,
+            52,
+            27
+        ],
+        "action": "Click",
+        "next": [
+            "地府材料MAX"
+        ]
+    },
+    "地府材料MAX": {
+        "recognition": "TemplateMatch",
+        "template": "兑换商店--MAX.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            487,
+            630,
+            52,
+            51
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "地府购买材料"
+        ]
+    },
+    "地府购买材料": {
+        "recognition": "OCR",
+        "expected": [
+            "购买"
+        ],
+        "threshold": 0.8,
+        "roi": [
+            320,
+            745,
+            81,
+            32
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "地府商店---奖励弹窗"
+        ]
+    },
+    "地府商店---奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            233,
+            447,
+            244,
+            65
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "next": [
+            "地府总确认"
+        ]
+    }
+}

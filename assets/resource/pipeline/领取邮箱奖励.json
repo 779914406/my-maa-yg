@@ -1,0 +1,109 @@
+{
+    "找到邮箱": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "邮箱.png"
+        ],
+        "roi": [
+            409,
+            127,
+            65,
+            72
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "邮箱总"
+        ]
+    },
+    "邮箱总": {
+        "next": [
+            "一键领取"
+        ]
+    },
+    "一键领取": {
+        "recognition": "OCR",
+        "expected": [
+            "一键领取"
+        ],
+        "roi": [
+            409,
+            1019,
+            170,
+            60
+        ],
+        "action": "Click",
+        "timeout": 5000,
+        "next": [
+            "邮箱判断有没有弹窗"
+        ]
+    },
+    "邮箱判断有没有弹窗": {
+        "next": [
+            "关闭邮箱奖励弹窗",
+            "邮箱右上角叉"
+        ]
+    },
+    "关闭邮箱奖励弹窗": {
+        "recognition": "OCR",
+        "roi": [
+            235,
+            246,
+            253,
+            85
+        ],
+        "expected": [
+            "恭喜获得"
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": [
+            387,
+            1170
+        ],
+        "next": [
+            "邮箱右上角叉"
+        ]
+    },
+    "邮箱右上角叉": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "邮箱右上角叉.png"
+        ],
+        "roi": [
+            598,
+            161,
+            92,
+            87
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "邮箱回到主线判断"
+        ]
+    },
+    "邮箱回到主线判断": {
+        "next": [
+            "邮箱右上角叉",
+            "邮箱主线按钮返回"
+        ]
+    },
+    "邮箱主线按钮返回": {
+        "recognition": "TemplateMatch",
+        "template": "主线新.png",
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "DoNothing",
+        "timeout": 3000,
+        "next": [] // 最后一步，流程结束
+    }
+}

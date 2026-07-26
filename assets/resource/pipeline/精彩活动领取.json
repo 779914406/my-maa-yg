@@ -1,0 +1,414 @@
+{
+    "前往精彩活动": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "主线新.png"
+        ],
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "Click",
+        "next": [
+            "精彩活动"
+        ]
+    },
+    "精彩活动": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "精彩活动.png"
+        ],
+        "roi": [
+            631,
+            532,
+            57,
+            43
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "action": "Click",
+        "pre_delay": 2000,
+        "next": [
+            "进入礼包页面"
+        ]
+    },
+    "进入礼包页面": {
+        "next": [
+            "金币礼包领取",
+            "每日特惠"
+        ]
+    },
+    "金币礼包领取": {
+        "recognition": "OCR",
+        "expected": [
+            "免费"
+        ],
+        "roi": [
+            518,
+            586,
+            130,
+            57
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "post_delay": 2000,
+        "action": "Click",
+        "next": [
+            "关闭金币弹窗"
+        ]
+    },
+    "关闭金币弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "金币"
+        ],
+        "roi": [
+            312,
+            730,
+            96,
+            38
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "每日特惠"
+        ]
+    },
+    "每日特惠": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "每日特惠.png"
+        ],
+        "roi": [
+            148,
+            1189,
+            92,
+            80
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "post_delay": 2000,
+        "action": "Click",
+        "next": [
+            "免费礼包",
+            "滑动找到好友分享"
+        ]
+    },
+    "免费礼包": {
+        "recognition": "OCR",
+        "expected": [
+            "免费"
+        ],
+        "roi": [
+            31,
+            955,
+            109,
+            45
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "post_delay": 2000,
+        "action": "Click",
+        "next": [
+            "关闭免费礼包弹窗"
+        ]
+    },
+    "关闭免费礼包弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            231,
+            436,
+            259,
+            82
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "滑动找到好友分享"
+        ]
+    },
+    "滑动找到好友分享": {
+        "action": "Swipe",
+        "begin": [
+            540,
+            1220
+        ],
+        "end": [
+            40,
+            1220
+        ],
+        "duration": 1000,
+        "next": [
+            "找到并点击好友分享",
+            "滑动找到好友分享"
+        ]
+    },
+    "找到并点击好友分享": {
+        "recognition": "OCR",
+        "expected": "好友分享",
+        "roi": [
+            433,
+            1201,
+            112,
+            75
+        ],
+        "threshold": 0.7,
+        "timeout": 20000,
+        "action": "Click",
+        "pre_delay": 3000,
+        "next": [
+            "进入好友分享页面"
+        ]
+    },
+    "进入好友分享页面": {
+        // ... 前面识别入口并点击的代码 ...
+        "next": [
+            "点击分享", // 先看看屏幕上有没有分享，有就去执行分享的循环
+            "点击领取",
+            "识别累计次数_15次",
+            "识别累计次数_45次",
+            "识别累计次数_80次",
+            "精彩活动返回主线" // 如果连领取都没有（领光了），就直接撤退
+        ]
+    },
+    "点击分享": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "精彩活动--分享按钮.png"
+                ],
+                "roi": [
+                    498,
+                    522,
+                    183,
+                    463
+                ],
+                "threshold": 0.7
+            }
+        },
+        // 【执行动作】：如果找到了上面的文字，就执行点击
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true // 点击识别到的目标（即“分享”这两个字所在的位置）
+            }
+        },
+        "pre_delay": 1000,
+        "timeout": 20000,
+        "attach": {
+            "reduceOtherTimes": 1 // 附加属性：通常用于控制内部的循环次数或重试次数，这里表示某些全局次数减 1
+        },
+        "next": [
+            "点击分享",
+            "点击领取"
+        ]
+    },
+    "点击领取": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "精彩活动--领取按钮.png"
+                ],
+                "roi": [
+                    505,
+                    515,
+                    167,
+                    467
+                ],
+                "threshold": 0.7
+            }
+        },
+        // 【执行动作】：如果找到了上面的文字，就执行点击
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": true // 点击识别到的目标（即“领取”这两个字所在的位置）
+            }
+        },
+        "pre_delay": 1000,
+        "timeout": 20000,
+        "attach": {
+            "reduceOtherTimes": 1 // 附加属性：通常用于控制内部的循环次数或重试次数，这里表示某些全局次数减 1
+        },
+        "next": [
+            "关闭好友领取弹窗",
+            "点击分享",
+            "点击领取"
+        ]
+    },
+    "关闭好友领取弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            231,
+            436,
+            259,
+            82
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "点击领取",
+            "识别累计次数_15次",
+            "识别累计次数_45次",
+            "识别累计次数_80次",
+            "精彩活动返回主线"
+        ]
+    },
+    "识别累计次数_15次": {
+        "recognition": "OCR",
+        "expected": [
+            "15次",
+            "15"
+        ],
+        "roi": [
+            46,
+            334,
+            92,
+            88
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": [
+            253,
+            323,
+            63,
+            63
+        ],
+        "next": [
+            "精彩关闭累计奖励弹窗"
+        ]
+    },
+    "识别累计次数_45次": {
+        "recognition": "OCR",
+        "expected": [
+            "45次",
+            "45"
+        ],
+        "roi": [
+            46,
+            334,
+            92,
+            88
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": [
+            433,
+            322,
+            63,
+            63
+        ],
+        "next": [
+            "精彩关闭累计奖励弹窗"
+        ]
+    },
+    "识别累计次数_80次": {
+        "recognition": "OCR",
+        "expected": [
+            "80次",
+            "80",
+            "81"
+        ],
+        "roi": [
+            46,
+            334,
+            92,
+            88
+        ],
+        "threshold": 0.7,
+        "action": "Click",
+        "target": [
+            613,
+            321,
+            62,
+            62
+        ],
+        "next": [
+            "精彩关闭累计奖励弹窗"
+        ]
+    },
+    "精彩关闭累计奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得",
+            "资源",
+            "材料"
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "精彩活动返回主线"
+        ]
+    },
+    "精彩关闭奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            231,
+            436,
+            259,
+            82
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "精彩活动返回主线"
+        ]
+    },
+    "精彩活动返回主线": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "精彩活动返回主线.png"
+        ],
+        "roi": [
+            629,
+            1204,
+            75,
+            75
+        ],
+        "threshold": 0.7,
+        "action": "Click"
+    }
+}

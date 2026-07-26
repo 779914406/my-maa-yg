@@ -1,0 +1,278 @@
+{
+    "公会探矿_启动": {
+        "enabled": false,
+        "next": [
+            "点击公会探矿"
+        ]
+    },
+    "公会探矿_领收益": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "点击公会按钮"
+        ]
+    },
+    "点击公会按钮": {
+        "recognition": "TemplateMatch",
+        "template": "公会新.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            595,
+            1182,
+            113,
+            93
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "点击公会探矿"
+        ]
+    },
+    "点击公会探矿": {
+        "recognition": "TemplateMatch",
+        "template": "点击探矿按钮新.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            529,
+            157,
+            158,
+            116
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "post_delay": 2000,
+        "next": [
+            "矿区总控制"
+        ]
+    },
+    "矿区总控制": {
+        "next": [
+            "右下暂未占领",
+            "点击右下角收益图标",
+            "探矿收益满",
+            "探矿收益半满"
+        ]
+    },
+    "右下暂未占领": {
+        "recognition": "OCR",
+        "expected": [
+            "暂未占领"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            601,
+            1144,
+            108,
+            39
+        ],
+        "action": "DoNothing",
+        "timeout": 3000,
+        "next": [
+            "点击右下角返回按钮"
+        ]
+    },
+    "点击右下角收益图标": {
+        "recognition": "TemplateMatch",
+        "template": "探矿收益右下角新.png",
+        "threshold": [
+            0.6
+        ],
+        "roi": [
+            612,
+            1060,
+            94,
+            91
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "识别有没有探矿币",
+            "探矿---暂无挂机奖励"
+        ]
+    },
+    "探矿收益满": {
+        "recognition": "TemplateMatch",
+        "template": "右下角矿区收益满.png",
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            600,
+            1061,
+            112,
+            93
+        ],
+        "action": "Click",
+        "timeout": 3000,
+        "post_delay": 2000,
+        "next": [
+            "识别有没有探矿币",
+            "探矿---暂无挂机奖励"
+        ]
+    },
+    "探矿收益半满": {
+        "recognition": "TemplateMatch",
+        "template": "公会探矿--右下角收益半满.png",
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            606,
+            1089,
+            95,
+            62
+        ],
+        "action": "Click",
+        "timeout": 3000,
+        "post_delay": 2000,
+        "next": [
+            "识别有没有探矿币",
+            "探矿---暂无挂机奖励"
+        ]
+    },
+    "探矿---暂无挂机奖励": {
+        "recognition": "TemplateMatch",
+        "template": "探矿--暂无挂机奖励.png",
+        "threshold": [
+            0.9
+        ],
+        "roi": [
+            258,
+            788,
+            210,
+            68
+        ],
+        "action": "DoNothing",
+        "timeout": 3000,
+        "next": [
+            "探矿---暂无挂机奖励---叉掉"
+        ]
+    },
+    "探矿---暂无挂机奖励---叉掉": {
+        "recognition": "TemplateMatch",
+        "template": "探险收益无叉掉.png",
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            527,
+            1055,
+            73,
+            79
+        ],
+        "action": "Click",
+        "timeout": 10000,
+        "post_delay": 2000,
+        "next": [
+            "点击右下角返回按钮"
+        ]
+    },
+    "识别有没有探矿币": {
+        "recognition": "TemplateMatch", // 改成模板匹配
+        "template": "探矿币.png", // 你截的领取按钮图片
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            341,
+            806,
+            36,
+            32
+        ],
+        "action": "DoNothing",
+        "timeout": 10000,
+        "next": [
+            "点击探矿币下方领取"
+        ]
+    },
+    "点击探矿币下方领取": {
+        "recognition": "OCR", // ⬅️ 改成：文字识别
+        "expected": [ // ⬅️ 改成：要找的文字
+            "领取"
+        ],
+        "roi": [
+            290,
+            975,
+            134,
+            49
+        ],
+        "action": "Click",
+        "timeout": 10000,
+        "next": [
+            "等待奖励弹窗消失"
+        ]
+    },
+    "等待奖励弹窗消失": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "action": "DoNothing",
+        "timeout": 3000,
+        "next": [
+            "点击空白处关弹窗"
+        ]
+    },
+    // ==============================================
+    // 第5步：点击空白处关闭奖励弹窗
+    // ==============================================
+    "点击空白处关弹窗": {
+        "recognition": "DirectHit", // 不用识别，直接执行
+        "action": "Click",
+        "target_offset": [
+            350,
+            900,
+            0,
+            0
+        ], // 点屏幕中间空白位置（坐标你自己调）
+        "next": [
+            "点击右下角返回按钮" // ⬅️ 改了：从这里先去点返回
+        ]
+    },
+    // ==============================================
+    // 第6步：点击右下角的返回箭头 ✨ 新加的！
+    // ==============================================
+    "点击右下角返回按钮": {
+        "recognition": "TemplateMatch",
+        "template": "探矿返回.png", // 你截的右下角红色返回箭头
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            648,
+            1218,
+            56,
+            54
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "点击主线按钮返回"
+        ]
+    },
+    // ==============================================
+    // 第7步：点击底部「主线」返回主页面
+    // ==============================================
+    "点击主线按钮返回": {
+        "recognition": "TemplateMatch",
+        "template": "主线新.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "执行返回主线"
+        ] // 最后一步，流程结束
+    }
+}

@@ -1,0 +1,207 @@
+{
+    "点击副本--前往商店界面": {
+        "recognition": "TemplateMatch",
+        "template": "副本新.png",
+        "threshold": [
+            0.8
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "副本-兑换商店"
+        ]
+    },
+    "副本-兑换商店": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "兑换商店.png"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            69,
+            25,
+            61,
+            45
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "列车商店"
+        ]
+    },
+    "列车商店": {
+        "recognition": "OCR",
+        "expected": [
+            "列车商店"
+        ],
+        "roi": [
+            53,
+            1104,
+            124,
+            51
+        ],
+        "action": "Click",
+        "next": [
+            "列车商店总确认"
+        ]
+    },
+    "列车商店总确认": {
+        "next": [
+            "识别基建材料",
+            "鬼符小红点",
+            "基建已售完",
+            "鬼将没有小红点"
+        ]
+    },
+    "基建已售完": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "兑换商店--已售完.png"
+        ],
+        "roi": [
+            295,
+            446,
+            131,
+            43
+        ],
+        "next": [
+            "鬼将没有小红点"
+        ]
+    },
+    "鬼将没有小红点": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "鬼符小红点.png"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            185,
+            719,
+            51,
+            36
+        ],
+        "inverse": true,
+        "action": "DoNothing",
+        "timeout": 3000,
+        "next": [
+            "竞技商店"
+        ]
+    },
+    "识别基建材料": {
+        "recognition": "OCR",
+        "expected": [
+            "150"
+        ],
+        "roi": [
+            295,
+            446,
+            131,
+            43
+        ],
+        "action": "Click",
+        "next": [
+            "基建材料MAX"
+        ]
+    },
+    "鬼符小红点": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "鬼符小红点.png"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            185,
+            719,
+            51,
+            36
+        ],
+        "target": [
+            113,
+            737,
+            89,
+            28
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "基建材料MAX"
+        ]
+    },
+    "基建材料MAX": {
+        "recognition": "TemplateMatch",
+        "template": "兑换商店--MAX.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            487,
+            630,
+            52,
+            51
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "购买材料"
+        ]
+    },
+    "购买材料": {
+        "recognition": "OCR",
+        "expected": [
+            "购买"
+        ],
+        "threshold": 0.8,
+        "roi": [
+            320,
+            745,
+            81,
+            32
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "兑换商店---奖励弹窗"
+        ]
+    },
+    "兑换商店---奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            233,
+            447,
+            244,
+            65
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "next": [
+            "列车商店总确认"
+        ]
+    },
+    "关闭兑换商店": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "兑换商店右下叉.png"
+        ],
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            616,
+            1097,
+            75,
+            73
+        ],
+        "action": "Click",
+        "next": [
+            "点击主线按钮返回"
+        ]
+    }
+}

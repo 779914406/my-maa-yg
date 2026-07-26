@@ -1,0 +1,258 @@
+{
+    "无间_入口": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "无间鬼域里面",
+            "点击无间鬼蜮"
+        ]
+    },
+    "无间鬼域里面": {
+        "recognition": "OCR",
+        "expected": [
+            "排行"
+        ],
+        "threshold": 0.8,
+        "roi": [
+            631,
+            465,
+            78,
+            67
+        ],
+        "timeout": 500000,
+        "action": "DoNothing",
+        "next": [
+            "无间_清除计数"
+        ]
+    },
+    "点击无间鬼蜮": {
+        "recognition": "TemplateMatch",
+        "template": "无间鬼蜮.png",
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            0,
+            131,
+            100,
+            34
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "无间_清除计数"
+        ]
+    },
+    "无间_清除计数": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "ClearCounterAction",
+        "next": [
+            "无间_循环计数拦截"
+        ]
+    },
+    "无间_循环计数拦截": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "WuJianCounterAction",
+        "custom_action_param": {
+            "count": 5
+        },
+        "next": [
+            "信誉分",
+            "无间鬼蜮--开始匹配",
+            "开启玩法"
+        ],
+        "on_error": [
+            "无间鬼蜮--返回主线"
+        ]
+    },
+    "信誉分": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "无间鬼蜮--信誉分小红点.png"
+                ],
+                "roi": [
+                    679,
+                    544,
+                    36,
+                    34
+                ],
+                "threshold": 0.8
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    651,
+                    574,
+                    44,
+                    31
+                ]
+            }
+        },
+        "timeout": 1500,
+        "attach": {
+            "reduceOtherTimes": 1
+        },
+        "next": [
+            "信誉分钻石领取"
+        ],
+        "on_error": [
+            "无间_循环计数拦截"
+        ]
+    },
+    "信誉分钻石领取": {
+        "recognition": "OCR",
+        "expected": [
+            "领取"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            288,
+            1012,
+            140,
+            52
+        ],
+        "action": "Click",
+        "next": [
+            "信誉分关闭奖励弹窗"
+        ]
+    },
+    "信誉分关闭奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            239,
+            442,
+            247,
+            71
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            257,
+            952,
+            247,
+            72
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "信誉分界面右下角叉"
+        ]
+    },
+    "信誉分界面右下角叉": {
+        "recognition": "TemplateMatch",
+        "template": "好友体力---叉掉.png",
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            576,
+            1087,
+            90,
+            100
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "无间_循环计数拦截"
+        ]
+    },
+    "无间鬼蜮--开始匹配": {
+        "recognition": "OCR",
+        "expected": [
+            "开始匹配"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            258,
+            1150,
+            206,
+            79
+        ],
+        "action": "Click",
+        "timeout": 500000,
+        "next": [
+            "确定是不是已经进来无间副本",
+            "无间_关闭弹窗"
+        ]
+    },
+    "确定是不是已经进来无间副本": {
+        "recognition": "OCR",
+        "expected": [
+            "自动"
+        ],
+        "threshold": 0.7,
+        "roi": [
+            625,
+            1186,
+            68,
+            65
+        ],
+        "repeat": 1,
+        "repeat_delay": 300,
+        "action": "Click",
+        "timeout": 5000000,
+        "next": [
+            "无间_关闭弹窗",
+            "无间_循环计数拦截"
+        ]
+    },
+    "无间_关闭弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "点击空白处关闭"
+        ],
+        "roi": [
+            200,
+            950,
+            350,
+            200
+        ],
+        "repeat": 2,
+        "repeat_delay": 300,
+        "action": "Click",
+        "timeout": 1500,
+        "next": [
+            "无间_关闭弹窗"
+        ],
+        "on_error": [
+            "无间_循环计数拦截",
+            "开启玩法"
+        ]
+    },
+    "开启玩法": {
+        "recognition": "OCR",
+        "expected": [
+            "开启玩法"
+        ],
+        "action": "DoNothing",
+        "timeout": 5000,
+        "next": [
+            "无间鬼蜮--返回主线"
+        ]
+    },
+    "无间鬼蜮--返回主线": {
+        "recognition": "TemplateMatch",
+        "template": "无间鬼蜮返回主线按钮.png",
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            635,
+            1207,
+            66,
+            67
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": []
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "公会一条龙_入口": {
+        "next": [
+            "进入公会_通用",
+            "公会任务分发"
+        ]
+    },
+    "进入公会_通用": {
+        "recognition": "TemplateMatch",
+        "template": "公会新.png",
+        "roi": [
+            595,
+            1182,
+            113,
+            93
+        ],
+        "action": "Click",
+        "next": [
+            "公会任务分发"
+        ]
+    },
+    "公会任务分发": {
+        "action": "DoNothing",
+        "next": [
+            "公会砍价_启动",
+            "公会副本_启动",
+            "公会探矿_启动",
+            "执行返回主线"
+        ]
+    },
+    "执行返回主线": {
+        "recognition": "TemplateMatch",
+        "template": "主线新.png",
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": []
+    }
+}

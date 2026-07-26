@@ -1,0 +1,102 @@
+{
+    "找到好友": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "主线--好友.png"
+        ],
+        "roi": [
+            489,
+            128,
+            65,
+            68
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "进入好友页面1"
+        ]
+    },
+    "进入好友页面1": {
+        "next": [
+            "领取亮",
+            "关掉界面"
+        ]
+    },
+    "领取亮": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "好友体力--亮.png"
+                ],
+                "roi": [
+                    561,
+                    953,
+                    50,
+                    44
+                ],
+                "threshold": 0.7
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    415,
+                    980,
+                    174,
+                    65
+                ]
+            }
+        },
+        "pre_delay": 1000,
+        "timeout": 2500,
+        "attach": {
+            "reduceOtherTimes": 1
+        },
+        "next": [
+            "关闭好友体力弹窗1",
+            "关掉界面"
+        ]
+    },
+    "关闭好友体力弹窗1": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            242,
+            443,
+            241,
+            73
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "关掉界面"
+        ]
+    },
+    "关掉界面": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "好友体力---叉掉.png"
+        ],
+        "roi": [
+            613,
+            1069,
+            81,
+            91
+        ],
+        "threshold": 0.7,
+        "timeout": 5000,
+        "action": "Click",
+        "next": []
+    }
+}

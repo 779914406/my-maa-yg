@@ -1,0 +1,112 @@
+{
+    "公会砍价_启动": {
+        "enabled": false,
+        "next": [
+            "公会砍价"
+        ]
+    },
+    "找到公会": {
+        "recognition": "TemplateMatch",
+        "threshold": [
+            0.7
+        ],
+        "template": [
+            "公会新.png"
+        ],
+        "roi": [
+            595,
+            1182,
+            113,
+            93
+        ],
+        "action": "Click",
+        "next": [
+            "公会砍价"
+        ]
+    },
+    "公会砍价": {
+        "recognition": "OCR",
+        "expected": [
+            "公会砍"
+        ],
+        "roi": [
+            44,
+            863,
+            113,
+            85
+        ],
+        "timeout": 50000,
+        "action": "Click",
+        "next": [
+            "进入砍价界面",
+            "砍完关闭页面"
+        ]
+    },
+    "进入砍价界面": {
+        "recognition": "OCR",
+        "expected": [
+            "砍一刀"
+        ],
+        "roi": [
+            285,
+            921,
+            142,
+            49
+        ],
+        "threshold": 0.85,
+        "timeout": 1500,
+        "repeat": 1,
+        "repeat_delay": 300,
+        "action": "Click",
+        "next": [
+            "砍一刀领取弹窗"
+        ],
+        "on_error": [
+            "砍完关闭页面"
+        ]
+    },
+    "砍一刀领取弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            232,
+            436,
+            256,
+            84
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "next": [
+            "砍完关闭页面"
+        ]
+    },
+    "砍完关闭页面": {
+        "recognition": "TemplateMatch",
+        "threshold": [
+            0.6
+        ],
+        "template": [
+            "砍价---叉掉.png"
+        ],
+        "roi": [
+            565,
+            103,
+            81,
+            71
+        ],
+        "pre_delay": 1000,
+        "action": "Click",
+        "next": [
+            "公会副本_启动",
+            "公会探矿_启动",
+            "执行返回主线"
+        ]
+    }
+}

@@ -5,8 +5,12 @@ from maa.toolkit import Toolkit
 
 import my_action
 import my_reco
-
-
+import counter_action 
+import Maps_action
+import hesong_agent
+import ClaimRewardAct
+import FengMoLuCounterAction
+import WuJianCounterAction
 def main():
     Toolkit.init_option("./")
 
