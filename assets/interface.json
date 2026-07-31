@@ -1,6 +1,6 @@
 {
     "interface_version": 2,
-    "version": "1.0.1",
+    "version": "1.0.2",
     "name": "妖怪金手指助手",
     "description": "日常清理",
     "contact": "QQ群: 123456789",
@@ -38,7 +38,7 @@
         "child_exec": "python",
         "child_args": [
             "-u",
-            "../agent/main.py"
+            "./agent/main.py"
         ]
     },
     "option": {
