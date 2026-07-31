@@ -1,12 +1,12 @@
 {
-    "列车商店_启动": {
+    "天帝商店_启动": {
         "enabled": false,
         "max_hit": 1,
         "next": [
-            "列车商店"
+            "天帝商店"
         ]
     },
-    "列车商店": {
+    "天帝商店": {
         "action": "Custom",
         "custom_action": "FindAndClickTab",
         "custom_action_param": {
@@ -23,13 +23,13 @@
                 "地府商店",
                 "天帝宝库"
             ],
-            "target": "列车商店"
+            "target": "天帝宝库"
         },
         "next": [
-            "列车商店_读取余额"
+            "天帝商店_读取余额"
         ]
     },
-    "列车商店_读取余额": {
+    "天帝商店_读取余额": {
         "action": "Custom",
         "custom_action": "ReadCurrencyBalance",
         "custom_action_param": {
@@ -41,97 +41,56 @@
             ]
         },
         "next": [
-            "列车商店_检查列表"
+            "天帝商店_检查列表"
         ]
     },
-    "列车商店_检查列表": {
+    "天帝商店_检查列表": {
         "next": [
-            "[JumpBack]列车商店_检查基建材料",
-            "[JumpBack]列车商店_检查鬼将符",
-            "列车商店结束检查"
+            "[JumpBack]天帝商店_检查金玉宝葫",
+            "天帝商店结束检查"
         ]
     },
-    "列车商店_检查基建材料": {
+    "天帝商店_检查金玉宝葫": {
         "enabled": false,
         "max_hit": 1,
         "recognition": "OCR",
         "expected": [
-            "基建材料"
+            "金玉宝葫"
         ],
         "roi": [
-            346,
-            244,
+            139,
+            243,
             105,
-            33
-        ],
-        "action": "Custom",
-        "custom_action": "CheckShopBalance",
-        "custom_action_param": {
-            "price_roi": [
-                352,
-                450,
-                60,
-                31
-            ],
-            "next_node": "列车基建购买"
-        },
-        "next": []
-    },
-    "列车基建购买": {
-        "recognition": "DirectHit",
-        "target": [
-            300,
-            450,
-            120,
             36
         ],
-        "timeout": 30000,
-        "action": "Click",
-        "next": [
-            "列车材料MAX"
-        ]
-    },
-    "列车商店_检查鬼将符": {
-        "enabled": false,
-        "max_hit": 1,
-        "recognition": "OCR",
-        "expected": [
-            "鬼门点将符"
-        ],
-        "roi": [
-            117,
-            526,
-            123,
-            34
-        ],
         "action": "Custom",
         "custom_action": "CheckShopBalance",
         "custom_action_param": {
             "price_roi": [
-                139,
-                738,
-                70,
-                30
+                122,
+                450,
+                94,
+                35
             ],
-            "next_node": "鬼将符购买"
+            "next_node": "金玉宝葫购买"
         },
         "next": []
     },
-    "鬼将符购买": {
+    "金玉宝葫购买": {
         "recognition": "DirectHit",
         "target": [
-            90,
-            731,
             122,
-            40
+            450,
+            94,
+            35
         ],
         "timeout": 30000,
         "action": "Click",
         "next": [
-            "列车材料MAX"
+            "天帝材料MAX"
         ]
     },
-    "列车材料MAX": {
+    "天帝材料MAX": {
         "recognition": "TemplateMatch",
         "template": "兑换商店--MAX.png",
         "threshold": [
@@ -150,25 +109,27 @@
         ],
         "timeout": 30000,
         "next": [
-            "列车商店_检查最终价格"
+            "天帝商店_检查最终价格"
         ]
     },
-    "列车商店_检查最终价格": {
+    "天帝商店_检查最终价格": {
         "action": "Custom",
         "custom_action": "CheckFinalPrice",
         "custom_action_param": {
             "price_roi": [
-                266,
+                220,
                 711,
-                197,
+                260,
                 36
             ],
-            "buy_node": "列车购买材料",
-            "close_node": "列车关闭购买界面"
+            "buy_node": "天帝购买材料",
+            "close_node": "天帝关闭购买界面"
         },
-        "next": []
+        "next": [
+            "天帝关闭购买界面"
+        ]
     },
-    "列车关闭购买界面": {
+    "天帝关闭购买界面": {
         "recognition": "TemplateMatch",
         "template": [
             "商店购买当前页面关闭.png"
@@ -182,10 +143,10 @@
         "timeout": 5000,
         "action": "Click",
         "next": [
-            "列车商店_检查列表"
+            "天帝商店_检查列表"
         ]
     },
-    "列车购买材料": {
+    "天帝购买材料": {
         "recognition": "OCR",
         "expected": [
             "购买"
@@ -200,10 +161,10 @@
         "action": "Click",
         "timeout": 30000,
         "next": [
-            "列车商店---奖励弹窗"
+            "天帝商店---奖励弹窗"
         ]
     },
-    "列车商店---奖励弹窗": {
+    "天帝商店---奖励弹窗": {
         "recognition": "OCR",
         "expected": [
             "恭喜获得"
@@ -222,10 +183,10 @@
         ],
         "action": "Click",
         "next": [
-            "列车商店_重新读取余额"
+            "天帝商店_重新读取余额"
         ]
     },
-    "列车商店_重新读取余额": {
+    "天帝商店_重新读取余额": {
         "action": "Custom",
         "custom_action": "ReadCurrencyBalance",
         "custom_action_param": {
@@ -238,10 +199,10 @@
         },
         "next": []
     },
-    "列车商店结束检查": {
+    "天帝商店结束检查": {
         "next": []
     },
-    "列车关闭兑换商店": {
+    "天帝关闭兑换商店": {
         "recognition": "TemplateMatch",
         "template": [
             "兑换商店右下叉.png"

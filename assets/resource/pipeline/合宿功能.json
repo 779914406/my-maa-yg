@@ -1,0 +1,10 @@
+{
+    "合宿功能_入口": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "合宿正常打_启动",
+            "合宿领票_启动"
+        ]
+    }
+}

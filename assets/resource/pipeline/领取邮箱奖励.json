@@ -1,23 +1,54 @@
 {
-    "找到邮箱": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "邮箱.png"
-        ],
-        "roi": [
-            409,
-            127,
-            65,
-            72
-        ],
-        "threshold": 0.7,
-        "timeout": 5000,
-        "action": "Click",
+    "领取邮箱_启动": {
+        "enabled": false,
+        "max_hit": 1,
         "next": [
-            "邮箱总"
+            "判断有没有小红点",
+            "领取邮箱-判断是不是主线"
         ]
     },
-    "邮箱总": {
+    "判断有没有小红点": {
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "Custom",
+                "custom_recognition": "CheckRedDot",
+                "roi": [
+                    455,
+                    121,
+                    29,
+                    33
+                ]
+            },
+            {
+                "recognition": "OCR",
+                "expected": [
+                    "邮箱"
+                ],
+                "roi": [
+                    418,
+                    170,
+                    48,
+                    30
+                ]
+            }
+        ],
+        "box_index": 0,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    421,
+                    136,
+                    44,
+                    44
+                ]
+            }
+        },
+        "timeout": 2500,
+        "attach": {
+            "reduceOtherTimes": 1
+        },
         "next": [
             "一键领取"
         ]
@@ -57,11 +88,12 @@
             "恭喜获得"
         ],
         "threshold": 0.7,
-        "action": "Click",
         "target": [
             387,
             1170
         ],
+        "pre_delay": 3000,
+        "action": "Click",
         "next": [
             "邮箱右上角叉"
         ]
@@ -71,39 +103,33 @@
         "template": [
             "邮箱右上角叉.png"
         ],
-        "roi": [
-            598,
-            161,
-            92,
-            87
+        "target": [
+            650,
+            203
         ],
-        "threshold": 0.7,
-        "timeout": 5000,
+        "threshold": 0.8,
+        "timeout": 8000,
         "action": "Click",
         "next": [
-            "邮箱回到主线判断"
-        ]
-    },
-    "邮箱回到主线判断": {
-        "next": [
             "邮箱右上角叉",
-            "邮箱主线按钮返回"
+            "领取邮箱-判断是不是主线"
         ]
     },
-    "邮箱主线按钮返回": {
-        "recognition": "TemplateMatch",
-        "template": "主线新.png",
-        "threshold": [
-            0.7
+    "领取邮箱-判断是不是主线": {
+        "recognition": "OCR",
+        "expected": [
+            "主线"
         ],
         "roi": [
-            247,
-            1176,
-            106,
-            98
+            264,
+            1232,
+            81,
+            46
         ],
         "action": "DoNothing",
-        "timeout": 3000,
-        "next": [] // 最后一步，流程结束
+        "timeout": 30000,
+        "next": [
+            "领取奖励分发"
+        ]
     }
 }

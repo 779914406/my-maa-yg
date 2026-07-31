@@ -145,34 +145,27 @@
         ]
     },
     "滑动找到好友分享": {
-        "action": "Swipe",
-        "begin": [
-            540,
-            1220
-        ],
-        "end": [
-            40,
-            1220
-        ],
-        "duration": 1000,
-        "next": [
-            "找到并点击好友分享",
-            "滑动找到好友分享"
-        ]
-    },
-    "找到并点击好友分享": {
-        "recognition": "OCR",
-        "expected": "好友分享",
-        "roi": [
-            433,
-            1201,
-            112,
-            75
-        ],
-        "threshold": 0.7,
-        "timeout": 20000,
-        "action": "Click",
-        "pre_delay": 3000,
+        "action": "Custom",
+        "custom_action": "FindAndClickTab",
+        "custom_action_param": {
+            "roi": [
+                24,
+                1182,
+                556,
+                95
+            ],
+            "order": [
+                "礼包",
+                "每日特惠",
+                "皮肤商店",
+                "每日累充",
+                "累充福利",
+                "冥贴召回",
+                "食堂",
+                "好友分享"
+            ],
+            "target": "好友分享"
+        },
         "next": [
             "进入好友分享页面"
         ]

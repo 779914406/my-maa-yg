@@ -1,0 +1,441 @@
+{
+    "日常商店_启动": {
+        "enabled": false,
+        "max_hit": 1,
+        "next": [
+            "点击任务"
+        ]
+    },
+    "点击任务": {
+        "recognition": "OCR",
+        "expected": [
+            "任务"
+        ],
+        "roi": [
+            571,
+            148,
+            57,
+            49
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "threshold": 0.85,
+        "next": [
+            "领取日常--日常"
+        ]
+    },
+    "领取日常--日常": {
+        "recognition": "OCR",
+        "expected": [
+            "日常"
+        ],
+        "roi": [
+            53,
+            1164,
+            104,
+            54
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "threshold": 0.85,
+        "next": [
+            "判断并领取日常奖励"
+        ]
+    },
+    "判断并领取日常奖励": {
+        "next": [
+            "点击日常单项任务领取",
+            "点击日常上方活跃度领取",
+            "点击周常"
+        ]
+    },
+    "点击日常单项任务领取": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "日常--领取按钮.png"
+        ],
+        "roi": [
+            513,
+            395,
+            150,
+            614
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "post_delay": 800,
+        "next": [
+            "判断并领取日常奖励"
+        ]
+    },
+    "点击日常上方活跃度领取": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "日常--小红点.png"
+        ],
+        "roi": [
+            149,
+            201,
+            524,
+            93
+        ],
+        "threshold": 0.75,
+        "action": "Click",
+        "post_delay": 500,
+        "next": [
+            "关闭日常奖励弹窗"
+        ]
+    },
+    "关闭日常奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            242,
+            433,
+            235,
+            81
+        ],
+        "threshold": 0.85,
+        "timeout": 10000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "post_delay": 500,
+        "next": [
+            "判断并领取日常奖励"
+        ]
+    },
+    "点击周常": {
+        "recognition": "OCR",
+        "expected": [
+            "周常"
+        ],
+        "roi": [
+            234,
+            1167,
+            88,
+            49
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "threshold": 0.85,
+        "post_delay": 800,
+        "next": [
+            "判断并领取周常奖励"
+        ]
+    },
+    "判断并领取周常奖励": {
+        "next": [
+            "点击周常单项任务领取",
+            "点击周常上方活跃度领取",
+            "点击日常商店"
+        ]
+    },
+    "点击周常单项任务领取": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "日常--领取按钮.png"
+        ],
+        "roi": [
+            513,
+            395,
+            150,
+            614
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "post_delay": 800,
+        "next": [
+            "判断并领取周常奖励"
+        ]
+    },
+    "点击周常上方活跃度领取": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "日常--小红点.png"
+        ],
+        "roi": [
+            149,
+            201,
+            524,
+            93
+        ],
+        "threshold": 0.75,
+        "action": "Click",
+        "post_delay": 500,
+        "next": [
+            "关闭周常奖励弹窗"
+        ]
+    },
+    "关闭周常奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            242,
+            433,
+            235,
+            81
+        ],
+        "threshold": 0.85,
+        "timeout": 10000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "post_delay": 500,
+        "next": [
+            "判断并领取周常奖励"
+        ]
+    },
+    "点击日常商店": {
+        "recognition": "OCR",
+        "expected": [
+            "日常商店"
+        ],
+        "roi": [
+            391,
+            1166,
+            129,
+            49
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "threshold": 0.85,
+        "post_delay": 800,
+        "next": [
+            "日常商店_读取余额"
+        ]
+    },
+    "日常商店_读取余额": {
+        "action": "Custom",
+        "custom_action": "ReadCurrencyBalance",
+        "custom_action_param": {
+            "roi": [
+                80,
+                198,
+                113,
+                52
+            ]
+        },
+        "next": [
+            "日常商店_检查列表"
+        ]
+    },
+    "日常商店_检查列表": {
+        "next": [
+            "[JumpBack]日常商店_检查钻石",
+            "[JumpBack]日常商店_检查九州皮肤箱",
+            "关闭日常"
+        ]
+    },
+    "日常商店_检查钻石": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": "OCR",
+        "expected": [
+            "钻石"
+        ],
+        "roi": [
+            390,
+            456,
+            61,
+            35
+        ],
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                353,
+                661,
+                68,
+                41
+            ],
+            "next_node": "日常钻石购买"
+        },
+        "next": []
+    },
+    "日常钻石购买": {
+        "recognition": "DirectHit",
+        "target": [
+            299,
+            663,
+            124,
+            38
+        ],
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "日常材料MAX"
+        ]
+    },
+    "日常商店_检查九州皮肤箱": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": "OCR",
+        "expected": [
+            "九州皮肤箱"
+        ],
+        "roi": [
+            115,
+            740,
+            127,
+            36
+        ],
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                135,
+                946,
+                79,
+                38
+            ],
+            "next_node": "日常九州皮肤箱购买"
+        },
+        "next": []
+    },
+    "日常九州皮肤箱购买": {
+        "recognition": "DirectHit",
+        "target": [
+            90,
+            947,
+            125,
+            38
+        ],
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "日常材料MAX"
+        ]
+    },
+    "日常材料MAX": {
+        "recognition": "TemplateMatch",
+        "template": "兑换商店--MAX.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            485,
+            630,
+            54,
+            53
+        ],
+        "action": "Click",
+        "target": [
+            513,
+            655
+        ],
+        "timeout": 30000,
+        "next": [
+            "日常商店_检查最终价格"
+        ]
+    },
+    "日常商店_检查最终价格": {
+        "action": "Custom",
+        "custom_action": "CheckFinalPrice",
+        "custom_action_param": {
+            "price_roi": [
+                260,
+                710,
+                203,
+                39
+            ],
+            "buy_node": "日常购买材料",
+            "close_node": "日常关闭购买界面"
+        },
+        "next": []
+    },
+    "日常关闭购买界面": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "商店购买当前页面关闭.png"
+        ],
+        "roi": [
+            558,
+            839,
+            75,
+            84
+        ],
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "日常商店_检查列表"
+        ]
+    },
+    "日常购买材料": {
+        "recognition": "OCR",
+        "expected": [
+            "购买"
+        ],
+        "threshold": 0.8,
+        "roi": [
+            320,
+            745,
+            81,
+            32
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "日常商店---奖励弹窗"
+        ]
+    },
+    "日常商店---奖励弹窗": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "roi": [
+            233,
+            447,
+            244,
+            65
+        ],
+        "threshold": 0.7,
+        "timeout": 30000,
+        "target": [
+            387,
+            1200
+        ],
+        "action": "Click",
+        "next": [
+            "日常商店_重新读取余额"
+        ]
+    },
+    "日常商店_重新读取余额": {
+        "action": "Custom",
+        "custom_action": "ReadCurrencyBalance",
+        "custom_action_param": {
+            "roi": [
+                80,
+                198,
+                113,
+                52
+            ]
+        },
+        "next": []
+    },
+    "关闭日常": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "关闭日常.png"
+        ],
+        "roi": [
+            618,
+            1160,
+            79,
+            78
+        ],
+        "threshold": 0.85,
+        "action": "Click",
+        "next": [
+            "领取奖励分发"
+        ]
+    }
+}

@@ -11,6 +11,10 @@ import hesong_agent
 import ClaimRewardAct
 import FengMoLuCounterAction
 import WuJianCounterAction
+import CheckShopBalance
+import FindAndClickTab
+import CheckLiangState
+import CompareTicketAction
 def main():
     Toolkit.init_option("./")
 

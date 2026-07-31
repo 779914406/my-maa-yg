@@ -239,11 +239,9 @@
         "threshold": [
             0.8
         ],
-        "roi": [
-            573,
-            319,
-            67,
-            61
+        "target": [
+            606,
+            349
         ],
         "action": "Click",
         "timeout": 10000,

@@ -1,0 +1,48 @@
+{
+    "领取奖励_入口": {
+        "next": [
+            "进入主线_通用",
+            "兑换商店任务分发"
+        ]
+    },
+    "进入主线_通用": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "主线新.png"
+        ],
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "Click",
+        "next": [
+            "领取奖励分发"
+        ]
+    },
+    "领取奖励分发": {
+        "action": "DoNothing",
+        "next": [
+            "[JumpBack]日常商店_启动",
+            "[JumpBack]领取邮箱_启动",
+            "[JumpBack]好友体力_启动",
+            "领取-执行返回主线"
+        ]
+    },
+    "领取-执行返回主线": {
+        "recognition": "OCR",
+        "expected": [
+            "主线"
+        ],
+        "roi": [
+            264,
+            1232,
+            81,
+            46
+        ],
+        "action": "DoNothing",
+        "timeout": 30000,
+        "next": []
+    }
+}

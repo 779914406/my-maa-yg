@@ -1,0 +1,81 @@
+{
+    "兑换商店_入口": {
+        "next": [
+            "进入兑换商店_通用",
+            "兑换商店任务分发"
+        ]
+    },
+    "进入兑换商店_通用": {
+        "recognition": "TemplateMatch",
+        "template": "副本新.png",
+        "threshold": [
+            0.8
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "点击-兑换商店"
+        ]
+    },
+    "点击-兑换商店": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "兑换商店.png"
+        ],
+        "threshold": 0.8,
+        "roi": [
+            69,
+            25,
+            61,
+            45
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "兑换商店任务分发"
+        ]
+    },
+    "兑换商店任务分发": {
+        "action": "DoNothing",
+        "next": [
+            "[JumpBack]列车商店_启动",
+            "[JumpBack]竞技商店_启动",
+            "[JumpBack]噩梦商店_启动",
+            "[JumpBack]地府商店_启动",
+            "[JumpBack]天帝商店_启动",
+            "兑换-关闭兑换商店"
+        ]
+    },
+    "兑换-关闭兑换商店": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "兑换商店右下叉.png"
+        ],
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            616,
+            1097,
+            75,
+            73
+        ],
+        "action": "Click",
+        "next": [
+            "兑换-执行返回主线"
+        ]
+    },
+    "兑换-执行返回主线": {
+        "recognition": "TemplateMatch",
+        "template": "主线新.png",
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": []
+    }
+}

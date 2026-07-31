@@ -7,29 +7,26 @@ from maa.context import Context
 class HeSuCounterAction(CustomAction):  
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:  
         try:  
-            # 正确解析 JSON 参数  
             param = json.loads(argv.custom_action_param)  
             count_value = param.get("count", 5)  
-              
-            # 处理变量引用  
+  
             if isinstance(count_value, str) and count_value.startswith("$"):  
-                # 变量引用：从 context 获取实际值  
                 node_name = count_value.split(".")[-1]  
                 target_count = context.get_hit_count(node_name)  
             else:  
-                # 直接是数字  
                 target_count = int(count_value)  
         except (json.JSONDecodeError, ValueError, AttributeError) as e:  
             print(f"⚠️ 参数解析失败: {e}, 使用默认值 5")  
             target_count = 5  
-          
-        # 获取当前节点的命中次数  
+  
         current_count = context.get_hit_count(argv.node_name)  
         print(f"当前已刷次数: {current_count} / 目标次数: {target_count}")  
-          
-        # 检查是否达到目标次数  
-        return current_count <= target_count  
   
+        # -1 表示无限刷取，永不因次数触发失败  
+        if target_count == -1:  
+            return True  
+  
+        return current_count <= target_count
 @AgentServer.custom_action("ClearCounterAction")  
 class ClearCounterAction(CustomAction):  
     def run(self, context: Context, argv: CustomAction.RunArg) -> bool:  

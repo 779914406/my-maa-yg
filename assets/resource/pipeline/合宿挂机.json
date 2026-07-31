@@ -1,4 +1,11 @@
 {
+    "合宿正常打_启动": {
+        "enabled": false,
+        "max_hit": 1,
+        "next": [
+            "合宿---从主线前往合宿入口"
+        ]
+    },
     "合宿---从主线前往合宿入口": {
         "recognition": "DirectHit",
         "action": "DoNothing",
@@ -128,6 +135,7 @@
         "custom_action_param": {
             "count": 5
         },
+        "timeout": 1500,
         "next": [
             "合宿_模式分支"
         ],
@@ -138,7 +146,33 @@
     "合宿_模式分支": {
         "recognition": "DirectHit",
         "action": "DoNothing",
-        "next": "合宿_单人开始"
+        "next": "合宿_门票检查"
+    },
+    "合宿_门票检查": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "CompareTicketAction",
+        "custom_action_param": {
+            "balance_roi": [
+                592,
+                114,
+                113,
+                43
+            ], // 你截图里"余额"数字的位置  
+            "cost_roi": [
+                408,
+                1140,
+                51,
+                42
+            ], // 副本页面上"消耗 X 票"的位置  
+            "success_next": [
+                "合宿_单人开始"
+            ],
+            "fail_next": [
+                "合宿_结束"
+            ]
+        },
+        "next": [] // 实际走向完全由 override_next 决定，这里留空即可  
     },
     "合宿_单人开始": {
         "recognition": "TemplateMatch",
@@ -156,13 +190,11 @@
     "合宿_单人确认弹窗": {
         "recognition": "OCR",
         "expected": "确定",
-        "roi": [
-            393,
-            694,
-            142,
-            55
+        "target": [
+            464,
+            722
         ],
-        "threshold": 0.6,
+        "threshold": 0.8,
         "action": "Click",
         "post_delay": 2000,
         "timeout": 300000,
@@ -180,7 +212,15 @@
         "action": "Click",
         "timeout": 100000,
         "post_delay": 1500,
-        "next": "合宿_点击公会标签"
+        "next": "合宿_邀请方式分发"
+    },
+    "合宿_邀请方式分发": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "合宿_点击公会标签",
+            "合宿_点击好友标签"
+        ]
     },
     "合宿_点击公会标签": {
         "recognition": "OCR",
@@ -194,6 +234,22 @@
         "action": "Click",
         "timeout": 1000000,
         "post_delay": 1500,
+        "enabled": true,
+        "next": "合宿_查找确认中转"
+    },
+    "合宿_点击好友标签": {
+        "recognition": "OCR",
+        "expected": "好友",
+        "roi": [
+            231,
+            1108,
+            137,
+            49
+        ],
+        "action": "Click",
+        "timeout": 1000000,
+        "post_delay": 1500,
+        "enabled": false,
         "next": "合宿_查找确认中转"
     },
     "合宿_查找确认中转": {
@@ -338,7 +394,7 @@
             550,
             150
         ],
-        "repeat": 2,
+        "repeat": 1,
         "repeat_delay": 300,
         "action": "Click",
         "target_offset": [
@@ -347,9 +403,30 @@
             0,
             0
         ],
-        "pre_delay": 5000,
-        "timeout": 480000,
-        "next": "合宿_副本识别结束后是否显示获得奖励"
+        "timeout": 3000,
+        "next": [
+            "判断是否有自动按钮"
+        ],
+        "on_error": [
+            "合宿_战斗点击床"
+        ]
+    },
+    "判断是否有自动按钮": {
+        "recognition": "OCR",
+        "expected": [
+            "自动"
+        ],
+        "roi": [
+            625,
+            1187,
+            67,
+            66
+        ],
+        "action": "DoNothing",
+        "timeout": 50000000,
+        "next": [
+            "合宿_副本识别结束后是否显示获得奖励"
+        ]
     },
     "合宿_副本识别结束后是否显示获得奖励": {
         "recognition": "OCR",
@@ -365,17 +442,101 @@
             "获得奖励"
         ],
         "action": "Click",
+        // 优先尝试直接点识别到的文字框本身（如果关闭点就在文字附近可点），  
+        // 如果关闭按钮和文字不在一起，则保留 target 固定坐标，但适当加大点击范围  
         "target": [
-            363,
-            1025
-        ],
-        "post_wait_freezes": 500,
-        "timeout": 3000,
+            343,
+            1000,
+            40,
+            50
+        ], // 用一个小范围代替单点，容错点击偏移  
+        "post_wait_freezes": 500, // 点击后等画面稳定了再判断，而不是立刻用剩余时间去识别  
+        "repeat": 2, // 同一次识别内重复点击 2 次，防止漏点  
+        "repeat_delay": 300,
+        "timeout": 2000,
         "next": [
             "合宿_关闭结算弹窗"
         ],
         "on_error": [
+            "合宿_门票中转"
+        ]
+    },
+    "合宿_门票中转": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "timeout": 3000,
+        "next": [
+            "合宿_领取门票"
+        ],
+        "on_error": [
             "判断有没有挂机弹窗"
+        ]
+    },
+    "合宿_领取门票": {
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "Custom",
+                "custom_recognition": "CheckRedDot",
+                "roi": [
+                    690,
+                    434,
+                    26,
+                    21
+                ]
+            },
+            {
+                "recognition": "OCR",
+                "expected": [
+                    "可领取"
+                ],
+                "roi": [
+                    646,
+                    488,
+                    59,
+                    25
+                ]
+            }
+        ],
+        "box_index": 0,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    676,
+                    469
+                ]
+            }
+        },
+        "timeout": 1000,
+        "attach": {
+            "reduceOtherTimes": 1
+        },
+        "next": [
+            "合宿_领取后关闭"
+        ],
+        "on_error": [
+            "判断有没有挂机弹窗"
+        ]
+    },
+    "合宿_领取后关闭": {
+        "recognition": "OCR",
+        "expected": [
+            "恭喜获得"
+        ],
+        "target": [
+            343,
+            1000,
+            40,
+            50
+        ],
+        "action": "Click",
+        "timeout": 1500,
+        "next": [
+            "判断有没有挂机弹窗"
+        ],
+        "on_error": [
+            "合宿_循环计数拦截"
         ]
     },
     "判断有没有挂机弹窗": {

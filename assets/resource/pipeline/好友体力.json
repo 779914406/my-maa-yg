@@ -1,66 +1,83 @@
 {
-    "找到好友": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "主线--好友.png"
-        ],
-        "roi": [
-            489,
-            128,
-            65,
-            68
-        ],
-        "threshold": 0.7,
-        "timeout": 5000,
-        "action": "Click",
-        "next": [
-            "进入好友页面1"
-        ]
-    },
-    "进入好友页面1": {
+    "好友体力_启动": {
+        "enabled": false,
+        "max_hit": 1,
         "next": [
             "领取亮",
-            "关掉界面"
+            "领取体力-判断是不是主线"
         ]
     },
     "领取亮": {
-        "recognition": {
-            "type": "TemplateMatch",
-            "param": {
-                "template": [
-                    "好友体力--亮.png"
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "Custom",
+                "custom_recognition": "CheckRedDot",
+                "roi": [
+                    538,
+                    127,
+                    21,
+                    21
+                ]
+            },
+            {
+                "recognition": "OCR",
+                "expected": [
+                    "好友"
                 ],
                 "roi": [
-                    561,
-                    953,
-                    50,
-                    44
-                ],
-                "threshold": 0.7
+                    497,
+                    170,
+                    45,
+                    30
+                ]
             }
-        },
+        ],
+        "box_index": 0,
         "action": {
             "type": "Click",
             "param": {
                 "target": [
-                    415,
-                    980,
-                    174,
-                    65
+                    497,
+                    140,
+                    43,
+                    38
                 ]
             }
         },
-        "pre_delay": 1000,
         "timeout": 2500,
         "attach": {
             "reduceOtherTimes": 1
         },
         "next": [
-            "关闭好友体力弹窗1",
+            "领取并赠送"
+        ]
+    },
+    "领取并赠送": {
+        "recognition": "OCR",
+        "expected": [
+            "领取并赠送"
+        ],
+        "roi": [
+            417,
+            985,
+            164,
+            51
+        ],
+        "threshold": 0.8,
+        "action": "Click",
+        "timeout": 5000,
+        "next": [
+            "体力判断有没有弹窗"
+        ]
+    },
+    "体力判断有没有弹窗": {
+        "next": [
+            "关闭体力弹窗",
             "关掉界面"
         ]
     },
-    "关闭好友体力弹窗1": {
+    "关闭体力弹窗": {
         "recognition": "OCR",
         "expected": [
             "恭喜获得"
@@ -88,15 +105,33 @@
         "template": [
             "好友体力---叉掉.png"
         ],
-        "roi": [
-            613,
-            1069,
-            81,
-            91
+        "target": [
+            656,
+            1119
         ],
-        "threshold": 0.7,
+        "threshold": 0.8,
         "timeout": 5000,
         "action": "Click",
-        "next": []
+        "next": [
+            "关掉界面",
+            "领取体力-判断是不是主线"
+        ]
+    },
+    "领取体力-判断是不是主线": {
+        "recognition": "OCR",
+        "expected": [
+            "主线"
+        ],
+        "roi": [
+            264,
+            1232,
+            81,
+            46
+        ],
+        "action": "DoNothing",
+        "timeout": 30000,
+        "next": [
+            "领取奖励分发"
+        ]
     }
 }

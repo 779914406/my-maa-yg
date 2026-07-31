@@ -1,163 +1,260 @@
 {
+    "竞技商店_启动": {
+        "enabled": false,
+        "max_hit": 1,
+        "next": [
+            "竞技商店"
+        ]
+    },
     "竞技商店": {
+        "action": "Custom",
+        "custom_action": "FindAndClickTab",
+        "custom_action_param": {
+            "roi": [
+                43,
+                1099,
+                547,
+                61
+            ],
+            "order": [
+                "列车商店",
+                "竞技商店",
+                "噩梦商店",
+                "地府商店",
+                "天帝宝库"
+            ],
+            "target": "竞技商店"
+        },
+        "next": [
+            "竞技商店_读取余额"
+        ]
+    },
+    "竞技商店_读取余额": {
+        "action": "Custom",
+        "custom_action": "ReadCurrencyBalance",
+        "custom_action_param": {
+            "roi": [
+                75,
+                85,
+                120,
+                50
+            ]
+        },
+        "next": [
+            "竞技商店_检查列表"
+        ]
+    },
+    "竞技商店_检查列表": {
+        "next": [
+            "[JumpBack]竞技商店_检查基建材料",
+            "[JumpBack]竞技商店_检查青铜币",
+            "[JumpBack]竞技商店_检查白金币",
+            "[JumpBack]竞技商店_检查耀金币",
+            "[JumpBack]竞技商店_检查不打折白银币",
+            "竞技商店结束检查"
+        ]
+    },
+    "竞技商店_检查基建材料": {
+        "enabled": false,
+        "max_hit": 1,
         "recognition": "OCR",
         "expected": [
-            "竞技商店"
+            "基建材料"
         ],
         "roi": [
-            220,
-            1102,
-            123,
-            52
-        ],
-        "action": "Click",
-        "next": [
-            "竞技商店总确认"
-        ]
-    },
-    "竞技商店总确认": {
-        "next": [
-            "竞技商店--识别基建材料",
-            "竞技商店--识别青铜币",
-            "竞技商店--识别白金币",
-            "竞技商店--识别耀金币",
-            "竞技基建已售完",
-            "竞技青铜币已售完",
-            "竞技白已售完",
-            "竞技耀已售完"
-        ]
-    },
-    "竞技基建已售完": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "兑换商店--已售完.png"
-        ],
-        "roi": [
-            295,
-            446,
-            131,
-            43
-        ],
-        "next": [
-            "竞技青铜币已售完"
-        ]
-    },
-    "竞技青铜币已售完": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "兑换商店--已售完.png"
-        ],
-        "roi": [
-            504,
-            732,
-            127,
-            41
-        ],
-        "next": [
-            "竞技白已售完"
-        ]
-    },
-    "竞技白已售完": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "竞技白已售完.png"
-        ],
-        "roi": [
-            105,
-            1014,
-            98,
+            343,
+            243,
+            106,
             36
         ],
-        "threshold": [
-            0.7
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                359,
+                453,
+                43,
+                31
+            ],
+            "next_node": "基建购买"
+        },
+        "next": []
+    },
+    "基建购买": {
+        "recognition": "DirectHit",
+        "target": [
+            359,
+            453,
+            43,
+            31
         ],
+        "timeout": 30000,
+        "action": "Click",
         "next": [
-            "竞技耀已售完"
+            "竞技材料MAX"
         ]
     },
-    "竞技耀已售完": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "竞技耀已售完.png"
+    "竞技商店_检查青铜币": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": "OCR",
+        "expected": [
+            "青铜币"
         ],
         "roi": [
-            314,
-            1013,
-            99,
+            577,
+            528,
+            83,
+            33
+        ],
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                561,
+                737,
+                51,
+                30
+            ],
+            "next_node": "青铜币购买"
+        },
+        "next": []
+    },
+    "青铜币购买": {
+        "recognition": "DirectHit",
+        "target": [
+            561,
+            737,
+            51,
+            30
+        ],
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "竞技材料MAX"
+        ]
+    },
+    "竞技商店_检查白金币": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": "OCR",
+        "expected": [
+            "白银币"
+        ],
+        "roi": [
+            158,
+            809,
+            87,
             37
         ],
-        "threshold": [
-            0.7
-        ],
-        "next": [
-            "地府商店"
-        ]
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                145,
+                1023,
+                52,
+                25
+            ],
+            "next_node": "白金币购买"
+        },
+        "next": []
     },
-    "竞技商店--识别基建材料": {
-        "recognition": "OCR",
-        "expected": [
-            "20"
+    "白金币购买": {
+        "recognition": "DirectHit",
+        "target": [
+            145,
+            1023,
+            52,
+            25
         ],
-        "roi": [
-            359,
-            455,
-            45,
-            28
-        ],
+        "timeout": 30000,
         "action": "Click",
         "next": [
-            "竞技基建材料MAX"
+            "竞技材料MAX"
         ]
     },
-    "竞技商店--识别青铜币": {
+    "竞技商店_检查耀金币": {
+        "enabled": false,
+        "max_hit": 1,
         "recognition": "OCR",
         "expected": [
-            "120"
+            "鎏金币"
         ],
         "roi": [
-            563,
-            737,
-            48,
-            29
+            364,
+            809,
+            87,
+            38
         ],
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                346,
+                1024,
+                64,
+                26
+            ],
+            "next_node": "耀金币购买"
+        },
+        "next": []
+    },
+    "耀金币购买": {
+        "recognition": "DirectHit",
+        "target": [
+            346,
+            1024,
+            64,
+            26
+        ],
+        "timeout": 30000,
         "action": "Click",
         "next": [
-            "竞技基建材料MAX"
+            "竞技材料MAX"
         ]
     },
-    "竞技商店--识别耀金币": {
+    "竞技商店_检查不打折白银币": {
+        "enabled": false,
+        "max_hit": 1,
         "recognition": "OCR",
         "expected": [
-            "3000"
+            "白银币"
         ],
         "roi": [
-            347,
-            1022,
-            65,
-            27
+            365,
+            528,
+            88,
+            38
         ],
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                351,
+                736,
+                59,
+                31
+            ],
+            "next_node": "不打折白银币购买"
+        },
+        "next": []
+    },
+    "不打折白银币购买": {
+        "recognition": "DirectHit",
+        "target": [
+            351,
+            736,
+            59,
+            31
+        ],
+        "timeout": 30000,
         "action": "Click",
         "next": [
-            "竞技基建材料MAX"
+            "竞技材料MAX"
         ]
     },
-    "竞技商店--识别白金币": {
-        "recognition": "OCR",
-        "expected": [
-            "250"
-        ],
-        "roi": [
-            143,
-            1022,
-            55,
-            27
-        ],
-        "action": "Click",
-        "next": [
-            "竞技基建材料MAX"
-        ]
-    },
-    "竞技基建材料MAX": {
+    "竞技材料MAX": {
         "recognition": "TemplateMatch",
         "template": "兑换商店--MAX.png",
         "threshold": [
@@ -170,12 +267,48 @@
             51
         ],
         "action": "Click",
+        "target": [
+            513,
+            655
+        ],
         "timeout": 30000,
         "next": [
-            "竞技基建购买材料"
+            "竞技商店_检查最终价格"
         ]
     },
-    "竞技基建购买材料": {
+    "竞技商店_检查最终价格": {
+        "action": "Custom",
+        "custom_action": "CheckFinalPrice",
+        "custom_action_param": {
+            "price_roi": [
+                220,
+                711,
+                260,
+                36
+            ],
+            "buy_node": "竞技购买材料",
+            "close_node": "竞技关闭购买界面"
+        },
+        "next": []
+    },
+    "竞技关闭购买界面": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "商店购买当前页面关闭.png"
+        ],
+        "roi": [
+            558,
+            839,
+            75,
+            84
+        ],
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "竞技商店_检查列表"
+        ]
+    },
+    "竞技购买材料": {
         "recognition": "OCR",
         "expected": [
             "购买"
@@ -212,7 +345,42 @@
         ],
         "action": "Click",
         "next": [
-            "竞技商店总确认"
+            "竞技商店_重新读取余额"
+        ]
+    },
+    "竞技商店_重新读取余额": {
+        "action": "Custom",
+        "custom_action": "ReadCurrencyBalance",
+        "custom_action_param": {
+            "roi": [
+                75,
+                85,
+                120,
+                50
+            ]
+        },
+        "next": []
+    },
+    "竞技商店结束检查": {
+        "next": []
+    },
+    "竞技关闭兑换商店": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "兑换商店右下叉.png"
+        ],
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            616,
+            1097,
+            75,
+            73
+        ],
+        "action": "Click",
+        "next": [
+            "点击主线按钮返回"
         ]
     }
 }

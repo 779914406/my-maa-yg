@@ -1,130 +1,213 @@
 {
+    "地府商店_启动": {
+        "enabled": false,
+        "max_hit": 1,
+        "next": [
+            "地府商店"
+        ]
+    },
     "地府商店": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "兑换商店--地府.png"
+        "action": "Custom",
+        "custom_action": "FindAndClickTab",
+        "custom_action_param": {
+            "roi": [
+                43,
+                1099,
+                547,
+                61
+            ],
+            "order": [
+                "列车商店",
+                "竞技商店",
+                "噩梦商店",
+                "地府商店",
+                "天帝宝库"
+            ],
+            "target": "地府商店"
+        },
+        "next": [
+            "地府商店_读取余额"
+        ]
+    },
+    "地府商店_读取余额": {
+        "action": "Custom",
+        "custom_action": "ReadCurrencyBalance",
+        "custom_action_param": {
+            "roi": [
+                75,
+                85,
+                120,
+                50
+            ]
+        },
+        "next": [
+            "地府商店_检查列表"
+        ]
+    },
+    "地府商店_检查列表": {
+        "next": [
+            "[JumpBack]地府商店_检查机关随机箱",
+            "[JumpBack]地府商店_检查永动齿轮",
+            "[JumpBack]地府商店_检查红机关",
+            "[JumpBack]地府商店_检查不倒拳王",
+            "地府商店结束检查"
+        ]
+    },
+    "地府商店_检查机关随机箱": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": "OCR",
+        "expected": [
+            "机关随机箱"
         ],
         "roi": [
-            537,
-            1102,
-            53,
-            47
+            535,
+            244,
+            124,
+            35
         ],
-        "threshold": [
-            0.7
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                561,
+                454,
+                52,
+                30
+            ],
+            "next_node": "机关随机箱购买"
+        },
+        "next": []
+    },
+    "机关随机箱购买": {
+        "recognition": "DirectHit",
+        "target": [
+            509,
+            449,
+            113,
+            38
         ],
+        "timeout": 30000,
         "action": "Click",
         "next": [
-            "地府总确认"
+            "地府材料MAX"
         ]
     },
-    "地府总确认": {
-        "next": [
-            "地府商店--识别机关随机箱",
-            "地府商店--识别永动齿轮",
-            "地府商店--识别红机关",
-            "地府机关随机箱已售完",
-            "地府永动齿轮已售完",
-            "地府红机关已售完"
-        ]
-    },
-    "地府机关随机箱已售完": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "地府商店--机关已售完.png"
+    "地府商店_检查永动齿轮": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": "OCR",
+        "expected": [
+            "永动齿轮"
         ],
         "roi": [
-            528,
-            451,
-            82,
+            345,
+            243,
+            104,
             34
         ],
-        "threshold": [
-            0.7
-        ],
-        "next": [
-            "地府永动齿轮已售完"
-        ]
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                359,
+                451,
+                44,
+                32
+            ],
+            "next_node": "永动齿轮购买"
+        },
+        "next": []
     },
-    "地府永动齿轮已售完": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "地府商店--永动齿轮.png"
+    "永动齿轮购买": {
+        "recognition": "DirectHit",
+        "target": [
+            299,
+            450,
+            124,
+            37
         ],
-        "roi": [
-            319,
-            451,
-            80,
-            32
-        ],
-        "threshold": [
-            0.7
-        ],
-        "next": [
-            "地府红机关已售完"
-        ]
-    },
-    "地府红机关已售完": {
-        "recognition": "TemplateMatch",
-        "template": [
-            "地府--红机关已售完.png"
-        ],
-        "roi": [
-            526,
-            1021,
-            84,
-            28
-        ],
-        "threshold": [
-            0.7
-        ],
-        "next": [
-            "关闭兑换商店"
-        ]
-    },
-    "地府商店--识别机关随机箱": {
-        "recognition": "OCR",
-        "expected": [
-            "120"
-        ],
-        "roi": [
-            560,
-            452,
-            56,
-            32
-        ],
+        "timeout": 30000,
         "action": "Click",
         "next": [
             "地府材料MAX"
         ]
     },
-    "地府商店--识别永动齿轮": {
+    "地府商店_检查红机关": {
+        "enabled": false,
+        "max_hit": 1,
         "recognition": "OCR",
         "expected": [
-            "10"
+            "红色机关随机"
         ],
         "roi": [
-            361,
-            454,
-            37,
-            30
+            521,
+            807,
+            141,
+            42
         ],
-        "action": "Click",
-        "next": [
-            "地府材料MAX"
-        ]
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                547,
+                1019,
+                78,
+                29
+            ],
+            "next_node": "红机关购买"
+        },
+        "next": []
     },
-    "地府商店--识别红机关": {
-        "recognition": "OCR",
-        "expected": [
-            "300"
-        ],
-        "roi": [
+    "红机关购买": {
+        "recognition": "DirectHit",
+        "target": [
             545,
             1021,
             52,
             27
         ],
+        "timeout": 30000,
+        "action": "Click",
+        "next": [
+            "地府材料MAX"
+        ]
+    },
+    "地府商店_检查不倒拳王": {
+        "enabled": false,
+        "max_hit": 1,
+        "recognition": "OCR",
+        "expected": [
+            "不倒拳王碎片"
+        ],
+        "roi": [
+            294,
+            807,
+            160,
+            41
+        ],
+        "action": "Custom",
+        "custom_action": "CheckShopBalance",
+        "custom_action_param": {
+            "price_roi": [
+                359,
+                1020,
+                39,
+                29
+            ],
+            "next_node": "不倒拳王购买"
+        },
+        "next": []
+    },
+    "不倒拳王购买": {
+        "recognition": "DirectHit",
+        "target": [
+            303,
+            1017,
+            107,
+            31
+        ],
+        "timeout": 30000,
         "action": "Click",
         "next": [
             "地府材料MAX"
@@ -143,9 +226,45 @@
             51
         ],
         "action": "Click",
+        "target": [
+            513,
+            655
+        ],
         "timeout": 30000,
         "next": [
-            "地府购买材料"
+            "地府商店_检查最终价格"
+        ]
+    },
+    "地府商店_检查最终价格": {
+        "action": "Custom",
+        "custom_action": "CheckFinalPrice",
+        "custom_action_param": {
+            "price_roi": [
+                266,
+                711,
+                197,
+                36
+            ],
+            "buy_node": "地府购买材料",
+            "close_node": "地府关闭购买界面"
+        },
+        "next": []
+    },
+    "地府关闭购买界面": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "商店购买当前页面关闭.png"
+        ],
+        "roi": [
+            558,
+            839,
+            75,
+            84
+        ],
+        "timeout": 5000,
+        "action": "Click",
+        "next": [
+            "地府商店_检查列表"
         ]
     },
     "地府购买材料": {
@@ -185,7 +304,42 @@
         ],
         "action": "Click",
         "next": [
-            "地府总确认"
+            "地府商店_重新读取余额"
+        ]
+    },
+    "地府商店_重新读取余额": {
+        "action": "Custom",
+        "custom_action": "ReadCurrencyBalance",
+        "custom_action_param": {
+            "roi": [
+                75,
+                85,
+                120,
+                50
+            ]
+        },
+        "next": [
+            "地府商店_检查列表"
+        ]
+    },
+    "地府商店结束检查": {},
+    "地府关闭兑换商店": {
+        "recognition": "TemplateMatch",
+        "template": [
+            "兑换商店右下叉.png"
+        ],
+        "threshold": [
+            0.7
+        ],
+        "roi": [
+            616,
+            1097,
+            75,
+            73
+        ],
+        "action": "Click",
+        "next": [
+            "点击主线按钮返回"
         ]
     }
 }

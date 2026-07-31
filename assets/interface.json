@@ -1,6 +1,6 @@
 {
     "interface_version": 2,
-    "version": "1.0.2",
+    "version": "1.0.0",
     "name": "妖怪金手指助手",
     "description": "日常清理",
     "contact": "QQ群: 123456789",
@@ -30,14 +30,15 @@
         {
             "name": "官服",
             "path": [
-                "{PROJECT_DIR}/resource/base"
+                "./resource"
             ]
         }
     ],
     "agent": {
         "child_exec": "python",
         "child_args": [
-            "{PROJECT_DIR}/agent/main.py"
+            "-u",
+            "../agent/main.py"
         ]
     },
     "option": {
@@ -217,24 +218,65 @@
         "play_mode": {
             "type": "select",
             "label": "挂机模式",
-            "description": "选择单人挑战或组队邀请",
+            "description": "选择单人挑战或组队挑战",
             "default_case": "单人挑战",
             "cases": [
                 {
                     "name": "单人挑战",
                     "label": "单人挑战",
                     "pipeline_override": {
-                        "合宿_模式分支": {
-                            "next": "合宿_单人开始"
+                        "合宿_门票检查": {
+                            "custom_action_param": {
+                                "balance_roi": [
+                                    592,
+                                    114,
+                                    113,
+                                    43
+                                ],
+                                "cost_roi": [
+                                    408,
+                                    1140,
+                                    51,
+                                    42
+                                ],
+                                "success_next": [
+                                    "合宿_单人开始"
+                                ],
+                                "fail_next": [
+                                    "合宿_结束"
+                                ]
+                            }
                         }
                     }
                 },
                 {
-                    "name": "组队邀请",
-                    "label": "组队邀请",
+                    "name": "组队挑战",
+                    "option": [
+                        "invite_friend"
+                    ],
+                    "label": "组队挑战",
                     "pipeline_override": {
-                        "合宿_模式分支": {
-                            "next": "合宿_点击主页邀请"
+                        "合宿_门票检查": {
+                            "custom_action_param": {
+                                "balance_roi": [
+                                    592,
+                                    114,
+                                    113,
+                                    43
+                                ],
+                                "cost_roi": [
+                                    408,
+                                    1140,
+                                    51,
+                                    42
+                                ],
+                                "success_next": [
+                                    "合宿_点击主页邀请"
+                                ],
+                                "fail_next": [
+                                    "合宿_结束"
+                                ]
+                            }
                         }
                     }
                 }
@@ -242,12 +284,11 @@
         },
         "run_count": {
             "type": "input",
-            "label": "刷取次数",
-            "description": "设置总共刷多少次后自动停止",
             "inputs": [
                 {
                     "name": "count",
-                    "label": "次数",
+                    "label": "刷取次数",
+                    "description": "设置总共刷多少次后自动停止",
                     "default": "1",
                     "pipeline_type": "int",
                     "verify": "^[1-9]\\d*$"
@@ -261,14 +302,39 @@
                 }
             }
         },
+        "hesu_run_mode": {
+            "type": "select",
+            "label": "合宿模式",
+            "description": "选择固定次数刷取，或无限刷取直到没有合宿票为止",
+            "default_case": "指定次数",
+            "cases": [
+                {
+                    "name": "指定次数",
+                    "label": "指定次数",
+                    "option": [
+                        "run_count"
+                    ]
+                },
+                {
+                    "name": "无限刷取",
+                    "label": "无限刷取(直到票不够自动停止)",
+                    "pipeline_override": {
+                        "合宿_循环计数拦截": {
+                            "custom_action_param": {
+                                "count": -1
+                            }
+                        }
+                    }
+                }
+            ]
+        },
         "invite_friend": {
             "type": "input",
-            "label": "邀请好友名字",
-            "description": "输入要组队邀请的公会好友昵称",
             "inputs": [
                 {
                     "name": "好友名字",
-                    "label": "好友昵称",
+                    "label": "邀请好友昵称",
+                    "description": "输入要组队邀请的公会好友昵称,只会邀请公会的",
                     "default": "忆梦",
                     "pipeline_type": "string"
                 }
@@ -284,12 +350,11 @@
         },
         "accept_invite_friend": {
             "type": "input",
-            "label": "接受邀请好友",
-            "description": "输入只同意其邀请的好友昵称（非该好友将拒绝）",
             "inputs": [
                 {
                     "name": "同意好友名字",
-                    "label": "好友昵称",
+                    "label": "接受好友邀请",
+                    "description": "输入只同意其邀请的好友昵称（非该好友将拒绝）",
                     "default": "森祈雪",
                     "pipeline_type": "string"
                 }
@@ -308,6 +373,376 @@
                     "expected": "{同意好友名字}"
                 }
             }
+        },
+        "rc_shop_switch": {
+            "type": "switch",
+            "label": "领取日常/周常/日常商店",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "option": [
+                        "rc_shop_items"
+                    ],
+                    "pipeline_override": {
+                        "日常商店_启动": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "日常商店_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "mailbox_switch": {
+            "type": "switch",
+            "label": "领取邮箱",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "pipeline_override": {
+                        "领取邮箱_启动": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "领取邮箱_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "friend_stamina_switch": {
+            "type": "switch",
+            "label": "领取好友体力",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "pipeline_override": {
+                        "好友体力_启动": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "好友体力_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "rc_shop_items": {
+            "type": "checkbox",
+            "label": "日常商店购买设置",
+            "description": "点击你需要购买的物品",
+            "default_case": [],
+            "cases": [
+                {
+                    "name": "钻石",
+                    "pipeline_override": {
+                        "日常商店_检查钻石": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "九州皮肤箱",
+                    "pipeline_override": {
+                        "日常商店_检查九州皮肤箱": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "lieche_shop_switch": {
+            "type": "switch",
+            "label": "列车商店",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "option": [
+                        "lieche_shop_items"
+                    ],
+                    "pipeline_override": {
+                        "列车商店_启动": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "列车商店_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "arena_shop_switch": {
+            "type": "switch",
+            "label": "竞技商店",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "option": [
+                        "arena_shop_items"
+                    ],
+                    "pipeline_override": {
+                        "竞技商店_启动": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "竞技商店_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "ermeng_shop_switch": {
+            "type": "switch",
+            "label": "噩梦商店",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "option": [
+                        "ermeng_shop_items"
+                    ],
+                    "pipeline_override": {
+                        "噩梦商店_启动": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "噩梦商店_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "underworld_shop_switch": {
+            "type": "switch",
+            "label": "地府商店",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "option": [
+                        "underworld_shop_items"
+                    ],
+                    "pipeline_override": {
+                        "地府商店_启动": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "地府商店_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "tiandi_shop_switch": {
+            "type": "switch",
+            "label": "天帝宝库",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "option": [
+                        "tiandi_shop_items"
+                    ],
+                    "pipeline_override": {
+                        "天帝商店_启动": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "天帝商店_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "lieche_shop_items": {
+            "type": "checkbox",
+            "label": "列车商店购买设置",
+            "description": "点击你需要购买的物品",
+            "default_case": [],
+            "cases": [
+                {
+                    "name": "基建材料",
+                    "pipeline_override": {
+                        "列车商店_检查基建材料": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "鬼门点将",
+                    "pipeline_override": {
+                        "列车商店_检查鬼将符": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "arena_shop_items": {
+            "type": "checkbox",
+            "label": "竞技商店购买设置",
+            "description": "点击你需要购买的物品",
+            "default_case": [],
+            "cases": [
+                {
+                    "name": "基建材料",
+                    "pipeline_override": {
+                        "竞技商店_检查基建材料": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "必买青铜",
+                    "pipeline_override": {
+                        "竞技商店_检查青铜币": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "必买白银",
+                    "pipeline_override": {
+                        "竞技商店_检查白金币": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "必买耀金",
+                    "pipeline_override": {
+                        "竞技商店_检查耀金币": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "白银币",
+                    "pipeline_override": {
+                        "竞技商店_检查不打折白银币": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "ermeng_shop_items": {
+            "type": "checkbox",
+            "label": "噩梦商店购买设置",
+            "description": "点击你需要购买的物品",
+            "default_case": [],
+            "cases": [
+                {
+                    "name": "红色遗物",
+                    "pipeline_override": {
+                        "噩梦商店_检查红色遗物": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "underworld_shop_items": {
+            "type": "checkbox",
+            "label": "地府商店购买设置",
+            "description": "点击你需要购买的物品",
+            "default_case": [],
+            "cases": [
+                {
+                    "name": "机关随机",
+                    "pipeline_override": {
+                        "地府商店_检查机关随机箱": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "永动齿轮",
+                    "pipeline_override": {
+                        "地府商店_检查永动齿轮": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "红色机关",
+                    "pipeline_override": {
+                        "地府商店_检查红机关": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "拳王碎片",
+                    "pipeline_override": {
+                        "地府商店_检查不倒拳王": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "tiandi_shop_items": {
+            "type": "checkbox",
+            "label": "天帝宝库购买设置",
+            "description": "点击你需要购买的物品",
+            "default_case": [],
+            "cases": [
+                {
+                    "name": "金玉宝葫",
+                    "pipeline_override": {
+                        "天帝商店_检查金玉宝葫": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
         },
         "fengmolu_run_count": {
             "type": "select",
@@ -594,12 +1029,11 @@
         },
         "wujian_run_count": {
             "type": "input",
-            "label": "无间鬼蜮刷取次数",
-            "description": "设置无间鬼蜮总共刷多少次后自动停止",
             "inputs": [
                 {
                     "name": "count",
-                    "label": "次数",
+                    "label": "无间刷取次数",
+                    "description": "设置无间鬼蜮总共刷多少次后自动停止",
                     "default": "5",
                     "pipeline_type": "int",
                     "verify": "^[1-9]\\d*$"
@@ -613,14 +1047,109 @@
                 }
             }
         },
-        "guild_one_dragon": {
-            "type": "checkbox",
-            "label": "选择公会任务",
-            "description": "点击你需要执行的任务",
-            "default_case": [],
+        "hesu_invite_target": {
+            "type": "select",
+            "label": "合宿邀请对象",
+            "description": "组队邀请时选择公会成员还是好友",
+            "default_case": "公会",
             "cases": [
                 {
-                    "name": "每日砍价",
+                    "name": "公会",
+                    "label": "公会",
+                    "pipeline_override": {
+                        "合宿_点击公会标签": {
+                            "enabled": true
+                        },
+                        "合宿_点击好友标签": {
+                            "enabled": false
+                        }
+                    }
+                },
+                {
+                    "name": "好友",
+                    "label": "好友",
+                    "pipeline_override": {
+                        "合宿_点击公会标签": {
+                            "enabled": false
+                        },
+                        "合宿_点击好友标签": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "hesu_mode": {
+            "type": "select",
+            "label": "合宿功能",
+            "description": "选择正常刷合宿，或只领取合宿票后直接回主线",
+            "default_case": "合宿挂机",
+            "cases": [
+                {
+                    "name": "合宿挂机",
+                    "label": "合宿挂机",
+                    "option": [
+                        "target_night",
+                        "hesu_run_mode",
+                        "play_mode",
+                        "hesu_invite_target"
+                    ],
+                    "pipeline_override": {
+                        "合宿正常打_启动": {
+                            "enabled": true
+                        },
+                        "合宿领票_启动": {
+                            "enabled": false
+                        }
+                    }
+                },
+                {
+                    "name": "只领票",
+                    "label": "只领取合宿票",
+                    "pipeline_override": {
+                        "合宿正常打_启动": {
+                            "enabled": false
+                        },
+                        "合宿领票_启动": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "wujian_mode": {
+            "type": "select",
+            "label": "无间刷取模式",
+            "description": "选择固定次数刷取，或无限刷取直到副本主页显示“开启玩法”",
+            "default_case": "指定次数",
+            "cases": [
+                {
+                    "name": "指定次数",
+                    "label": "指定次数",
+                    "option": [
+                        "wujian_run_count"
+                    ]
+                },
+                {
+                    "name": "无限刷取",
+                    "label": "无限刷取(直到开启玩法)",
+                    "pipeline_override": {
+                        "无间_循环计数拦截": {
+                            "custom_action_param": {
+                                "count": -1
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "guild_kanjia_switch": {
+            "type": "switch",
+            "label": "每日砍价",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
                     "pipeline_override": {
                         "公会砍价_启动": {
                             "enabled": true
@@ -628,7 +1157,22 @@
                     }
                 },
                 {
-                    "name": "工会副本",
+                    "name": "No",
+                    "pipeline_override": {
+                        "公会砍价_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "guild_fuben_switch": {
+            "type": "switch",
+            "label": "工会副本",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
                     "pipeline_override": {
                         "公会副本_启动": {
                             "enabled": true
@@ -636,10 +1180,33 @@
                     }
                 },
                 {
-                    "name": "工会探矿",
+                    "name": "No",
+                    "pipeline_override": {
+                        "公会副本_启动": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "guild_tankuang_switch": {
+            "type": "switch",
+            "label": "工会探矿",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
                     "pipeline_override": {
                         "公会探矿_启动": {
                             "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "公会探矿_启动": {
+                            "enabled": false
                         }
                     }
                 }
@@ -660,65 +1227,67 @@
             "entry": "前往精彩活动"
         },
         {
-            "name": "赠送好友体力",
-            "entry": "找到好友"
-        },
-        {
             "name": "无限列车",
-            "entry": "副本---无限列车",
-            "description": "自动领取挂机收益,扫荡,最后返回主线"
-        },
-        {
-            "name": "合宿挂机",
-            "entry": "合宿---从主线前往合宿入口",
-            "description": "自动刷合宿副本，支持指定次数",
-            "option": [
-                "target_night",
-                "run_count",
-                "play_mode",
-                "invite_friend"
-            ]
-        },
-        {
-            "name": "自动抢红包(待完善)",
-            "entry": "循环检测红包",
-            "description": "自动抢红包"
+            "entry": "副本---无限列车"
         },
         {
             "name": "兑换商店",
-            "entry": "点击副本--前往商店界面"
+            "entry": "兑换商店_入口",
+            "description": "点击要执行的商店和购买物品，默认是买最多的，会根据你的游戏币来判断够不够来买",
+            "option": [
+                "lieche_shop_switch",
+                "arena_shop_switch",
+                "ermeng_shop_switch",
+                "underworld_shop_switch",
+                "tiandi_shop_switch"
+            ]
+        },
+        {
+            "name": "合宿挂机",
+            "entry": "合宿功能_入口",
+            "description": "1.自动刷合宿副本和邀请好友(目前仅支持邀请本公会的)，支持指定次数和无限刷取(刷到没有合宿票为止),刷完合宿出来会自动检查有没有合宿票可以领取。2.可以选择正常刷或者只领取合宿票",
+            "option": [
+                "hesu_mode"
+            ]
         },
         {
             "name": "无间鬼蜮",
             "entry": "无间_入口",
             "option": [
-                "wujian_run_count"
+                "wujian_mode"
             ]
         },
         {
-            "name": "封魔录",
+            "name": "公会封魔",
             "entry": "封魔录_入口",
             "option": [
                 "fengmolu_run_count"
             ]
         },
         {
-            "name": "公会控制中心",
+            "name": "公会中心",
             "entry": "公会一条龙_入口",
             "option": [
-                "guild_one_dragon"
+                "guild_kanjia_switch",
+                "guild_fuben_switch",
+                "guild_tankuang_switch"
             ]
         },
         {
-            "name": "邮箱",
-            "entry": "找到邮箱"
-        },
-        {
-            "name": "检查合宿邀请",
+            "name": "合宿邀请",
             "entry": "判断在外面还是里面",
             "description": "输入要邀请你进合宿好友的名字",
             "option": [
                 "accept_invite_friend"
+            ]
+        },
+        {
+            "name": "领取奖励",
+            "entry": "领取奖励_入口",
+            "option": [
+                "rc_shop_switch",
+                "mailbox_switch",
+                "friend_stamina_switch"
             ]
         }
     ]

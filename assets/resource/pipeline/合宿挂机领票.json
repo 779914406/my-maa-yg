@@ -1,56 +1,151 @@
 {
-    "合宿_领票开关中转": {
+    "合宿领票_启动": {
+        "enabled": false,
+        "max_hit": 1,
+        "next": [
+            "合宿_只领票_入口"
+        ]
+    },
+    "合宿_只领票_入口": {
         "recognition": "DirectHit",
         "action": "DoNothing",
-        "next": []
+        "next": [
+            "只领票_点击合副本"
+        ]
     },
-    "合宿_识别可领取图标": {
-        "recognition": "OCR",
-        "expected": "可领取",
+    "只领票_点击合副本": {
+        "recognition": "TemplateMatch",
+        "template": "副本新.png",
+        "threshold": 0.8,
+        "action": "Click",
+        "timeout": 30000,
+        "next": [
+            "只领票_点击副本-合宿"
+        ]
+    },
+    "只领票_点击副本-合宿": {
+        "recognition": "TemplateMatch",
+        "template": "副本--合宿---挑战按钮.png",
+        "threshold": 0.8,
         "roi": [
-            633,
-            427,
-            84,
-            89
+            68,
+            415,
+            601,
+            254
         ],
         "action": "Click",
-        "timeout": 3000,
+        "timeout": 30000,
         "next": [
-            "合宿_点击领取弹窗"
-        ],
-        "on_error": []
+            "只领票_中转"
+        ]
     },
-    "合宿_点击领取弹窗": {
+    "只领票_中转": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "timeout": 1500,
+        "next": [
+            "只领票_领取门票"
+        ],
+        "on_error": [
+            "只领票_结束"
+        ]
+    },
+    "只领票_领取门票": {
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "Custom",
+                "custom_recognition": "CheckRedDot",
+                "roi": [
+                    690,
+                    434,
+                    26,
+                    21
+                ]
+            },
+            {
+                "recognition": "OCR",
+                "expected": [
+                    "可领取"
+                ],
+                "roi": [
+                    646,
+                    488,
+                    59,
+                    25
+                ]
+            }
+        ],
+        "box_index": 0,
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    676,
+                    469
+                ]
+            }
+        },
+        "timeout": 1000,
+        "next": [
+            "只领票_关闭弹窗"
+        ],
+        "on_error": [
+            "只领票_结束"
+        ]
+    },
+    "只领票_关闭弹窗": {
         "recognition": "OCR",
         "expected": [
             "恭喜获得"
         ],
-        "roi": [
-            238,
-            439,
-            240,
-            87
-        ],
-        "threshold": 0.7,
-        "timeout": 3000,
         "target": [
-            387,
-            1200
+            343,
+            1000,
+            40,
+            50
         ],
-        "pre_delay": 1000,
         "action": "Click",
+        "timeout": 1500,
         "next": [
-            "清除计数" // 领完收工，去打副本
+            "只领票_结束"
         ],
         "on_error": [
-            "合宿_关闭弹窗异常中转"
+            "只领票_强制结束"
         ]
     },
-    "合宿_关闭弹窗异常中转": {
-        "recognition": "DirectHit",
-        "action": "DoNothing",
+    "只领票_结束": {
+        "recognition": "TemplateMatch",
+        "template": "合宿返回主线的按钮.png",
+        "roi": [
+            603,
+            1171,
+            117,
+            107
+        ],
+        "threshold": [
+            0.7
+        ],
+        "action": "Click",
+        "timeout": 5000,
         "next": [
-            // 由中转节点桥接回主干线，完美绕过语法检查
+            "只领票_强制结束"
         ]
+    },
+    "只领票_强制结束": {
+        "recognition": "TemplateMatch",
+        "template": "主线新.png",
+        "threshold": [
+            0.8
+        ],
+        "roi": [
+            247,
+            1176,
+            106,
+            98
+        ],
+        "action": "Click",
+        "timeout": 30000,
+        "next": []
     }
 }
